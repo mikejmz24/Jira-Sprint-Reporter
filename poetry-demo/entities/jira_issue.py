@@ -96,9 +96,9 @@ class JiraIssue:
         result["description"] = self.description
         result["assignee"] = self.assignee
         result["reporter"] = self.reporter
-        result["created"] = self.created
-        result["updated"] = self.updated
-        result["resolved"] = self.resolved
+        result["created"] = str(self.created)
+        result["updated"] = str(self.updated)
+        result["resolved"] = str(self.resolved)
         return result
 
 

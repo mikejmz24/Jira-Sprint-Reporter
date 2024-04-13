@@ -13,3 +13,15 @@ def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
 
         print("repr() string: ", repr(json_data))
         assert isinstance(json_data, jira_issue.JiraIssue)
+
+
+def test_jira_issue_to_dict_returns_json_object_type() -> None:
+    """jira_issue_to_dict method return a valid Json object type
+    when a valid JiraIssue object is passed as parameter"""
+    with open("json_files/intgpt-109.json", encoding="utf-8") as json_file:
+        data = json.load(json_file)
+        print(type(data))
+        json_data: jira_issue.JiraIssue = jira_issue.jira_issue_from_dict(data)
+        json_response = jira_issue.jira_issue_to_dict(json_data)
+        print(json_response)
+        assert isinstance(json_response, dict)
