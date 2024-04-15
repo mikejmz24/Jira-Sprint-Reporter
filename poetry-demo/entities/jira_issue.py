@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
+from utilities import utils
+
 
 @dataclass
 class JiraIssue:
@@ -25,43 +27,26 @@ class JiraIssue:
 
     @staticmethod
     def from_dict(obj: Any):
-        date_format: str = "%Y-%m-%dT%H:%M:%S"
-        issue_id: int = int(obj.get("id"))
-        key: str = obj.get("key")
-        summary: str = obj.get("fields").get("summary")
-        issue_type: str = obj.get("fields").get("issuetype").get("name")
-        priority: str = obj.get("fields").get("priority").get("name")
-        component_items: list[dict] = obj.get("fields").get("components")
-        components = []
-        if component_items is not None:
-            for component in component_items:
-                components.append(component.get("name"))
-        label_items: list[dict] = obj.get("fields").get("labels")
-        labels = []
-        if label_items is not None:
-            for label in label_items:
-                labels.append(label.get("name"))
-        # sprints: list[str] = []
-        # for sprint in obj.get()
-        status: str = obj.get("fields").get("status").get("name")
-        resolution: str = obj.get("fields").get("resolution").get("name")
-        fix_version_items: list[dict] = obj.get("fields").get("fixVersions")
-        fix_versions = []
-        if fix_version_items is not None:
-            for fix_version in fix_version_items:
-                fix_versions.append(fix_version.get("name"))
-        description: str = obj.get("fields").get("description")
-        assignee: str = obj.get("fields").get("assignee").get("name")
-        reporter: str = obj.get("fields").get("reporter").get("name")
-        created: datetime = datetime.strptime(
-            obj.get("fields").get("created")[:-9], date_format
+        issue_id: int = int(utils.get_object_str(obj, "id"))
+        key: str = utils.get_object_str(obj, "key")
+        summary: str = utils.get_object_str(obj, "fields.summary")
+        issue_type: str = utils.get_object_str(obj, "fields.issuetype.name")
+        priority: str = utils.get_object_str(obj, "fields.priority.name")
+        components: list[str] = utils.get_object_list_of_str(
+            obj, "fields.components.name"
         )
-        updated: datetime = datetime.strptime(
-            obj.get("fields").get("updated")[:-9], date_format
+        labels: list[str] = utils.get_object_list_of_str(obj, "fields.labels.name")
+        status: str = utils.get_object_str(obj, "fields.status.name")
+        resolution: str = utils.get_object_str(obj, "fields.resolution.name")
+        description: str = utils.get_object_str(obj, "fields.description")
+        fix_versions: list[str] = utils.get_object_list_of_str(
+            obj, "fields.fixVersions.name"
         )
-        resolved: datetime = datetime.strptime(
-            obj.get("fields").get("resolutiondate")[:-9], date_format
-        )
+        assignee: str = utils.get_object_str(obj, "fields.assignee.name")
+        reporter: str = utils.get_object_str(obj, "fields.reporter.name")
+        created: datetime = utils.get_object_datetime(obj, "fields.created")
+        updated: datetime = utils.get_object_datetime(obj, "fields.updated")
+        resolved: datetime = utils.get_object_datetime(obj, "fields.resolutiondate")
         return JiraIssue(
             issue_id,
             key,
