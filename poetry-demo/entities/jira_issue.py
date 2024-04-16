@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from utilities import utils
 
@@ -16,14 +16,14 @@ class JiraIssue:
     labels: list[str]
     # sprint: list[str]
     status: str
-    resolution: str
     fix_version: list[str]
     description: str
     assignee: str
     reporter: str
     created: datetime
     updated: datetime
-    resolved: datetime
+    resolution: Optional[str] = None
+    resolved: Optional[datetime] = None
 
     @staticmethod
     def from_dict(obj: Any):
@@ -35,9 +35,8 @@ class JiraIssue:
         components: list[str] = utils.get_object_list_of_str(
             obj, "fields.components.name"
         )
-        labels: list[str] = utils.get_object_list_of_str(obj, "fields.labels.name")
+        labels: list[str] = utils.get_object_simple_list(obj, "fields.labels")
         status: str = utils.get_object_str(obj, "fields.status.name")
-        resolution: str = utils.get_object_str(obj, "fields.resolution.name")
         description: str = utils.get_object_str(obj, "fields.description")
         fix_versions: list[str] = utils.get_object_list_of_str(
             obj, "fields.fixVersions.name"
@@ -46,7 +45,16 @@ class JiraIssue:
         reporter: str = utils.get_object_str(obj, "fields.reporter.name")
         created: datetime = utils.get_object_datetime(obj, "fields.created")
         updated: datetime = utils.get_object_datetime(obj, "fields.updated")
-        resolved: datetime = utils.get_object_datetime(obj, "fields.resolutiondate")
+        resolution: Optional[str] = None
+        resolved: Optional[datetime] = None
+        if "fields.resolution" in obj:
+            resolution: Optional[str] = utils.get_object_str(
+                obj, "fields.resolution.name"
+            )
+        if "fields.resolutiondate" in obj:
+            resolved: Optional[datetime] = utils.get_object_datetime(
+                obj, "fields.resolutiondate"
+            )
         return JiraIssue(
             issue_id,
             key,
@@ -56,13 +64,13 @@ class JiraIssue:
             components,
             labels,
             status,
-            resolution,
             fix_versions,
             description,
             assignee,
             reporter,
             created,
             updated,
+            resolution,
             resolved,
         )
 
@@ -76,14 +84,16 @@ class JiraIssue:
         result["components"] = self.components
         result["labels"] = self.labels
         result["status"] = self.status
-        result["resolution"] = self.resolution
         result["fix_versions"] = self.fix_version
         result["description"] = self.description
         result["assignee"] = self.assignee
         result["reporter"] = self.reporter
         result["created"] = str(self.created)
         result["updated"] = str(self.updated)
-        result["resolved"] = str(self.resolved)
+        if self.resolution is not None:
+            result["resolution"] = self.resolution
+        if self.resolved is not None:
+            result["resolved"] = str(self.resolved)
         return result
 
 

@@ -25,10 +25,16 @@ def query_jira_issue_to_jira_issue_type(key: str) -> entities.jira_issue.JiraIss
     return data_to_show
 
 
+def query_jira_issue_to_dict_or_json(key: str) -> dict:
+    jira_issue_data: entities.jira_issue.JiraIssue = (
+        query_jira_issue_to_jira_issue_type(key)
+    )
+    result: dict = entities.jira_issue.jira_issue_to_dict(jira_issue_data)
+    return result
+
+
 if __name__ == "__main__":
     print("enter a jira issue to show the results on screen :) ")
     jira_issue = input()
-    data: entities.jira_issue.JiraIssue = query_jira_issue_to_jira_issue_type(
-        jira_issue
-    )
+    data: dict = query_jira_issue_to_dict_or_json(jira_issue)
     print(data)

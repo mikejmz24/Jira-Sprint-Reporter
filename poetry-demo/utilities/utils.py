@@ -34,6 +34,17 @@ def get_object_list_of_str(object_name: Any, path: str) -> list[str]:
     return result_list
 
 
+def get_object_simple_list(object_name: Any, path: str) -> list[str]:
+    path_list: list[str] = path.split(".")
+    result: Any = object_name
+    result_list: list[str] = []
+    for element in path_list:
+        result = result.get(element)
+    for item in result:
+        result_list.append(item)
+    return result_list
+
+
 def get_object_datetime(
     object_name: Any, path: str, date_format: str = "%Y-%m-%dT%H:%M:%S"
 ) -> datetime:
