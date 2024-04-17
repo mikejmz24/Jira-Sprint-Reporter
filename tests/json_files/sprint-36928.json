@@ -1,0 +1,518 @@
+{
+  "contents": {
+    "completedIssues": [
+      {
+        "id": 2354373,
+        "key": "INTGPT-309",
+        "hidden": false,
+        "typeId": "6",
+        "summary": "Public Prompts View - User Flow",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "leticiasarahy.rivera@thermofisher.com",
+        "assigneeName": "Rivera, Sarahy",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=leticiasahary.rivera%40thermofisher.com&avatarId=19499",
+        "hasCustomUserAvatar": true,
+        "epicId": "2463210",
+        "epic": "INTGPT-729",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          45326
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2426392,
+        "key": "INTGPT-621",
+        "hidden": false,
+        "typeId": "6",
+        "summary": "Review and refactor Credentials and Security Keys management on Gene AI API",
+        "priorityId": "10000",
+        "done": true,
+        "assignee": "fernando.arellano@thermofisher.com",
+        "assigneeName": "Arellano, Fernando",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?avatarId=14310",
+        "hasCustomUserAvatar": true,
+        "epicId": "2463472",
+        "epic": "INTGPT-735",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          45326
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2442451,
+        "key": "INTGPT-669",
+        "hidden": false,
+        "typeId": "1",
+        "summary": "500 error fix - Token Limit",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "fernando.arellano@thermofisher.com",
+        "assigneeName": "Arellano, Fernando",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?avatarId=14310",
+        "hasCustomUserAvatar": true,
+        "epicId": "2463485",
+        "epic": "INTGPT-737",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 0.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "5",
+        "fixVersions": [
+          45683
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2464989,
+        "key": "INTGPT-748",
+        "hidden": false,
+        "typeId": "2",
+        "summary": "Change Intake Link to T&C",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2464611",
+        "epic": "INTGPT-744",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          45683
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2471498,
+        "key": "INTGPT-777",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "POC: Run Python Script",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "fernando.arellano@thermofisher.com",
+        "assigneeName": "Arellano, Fernando",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?avatarId=14310",
+        "hasCustomUserAvatar": true,
+        "epicId": "2516860",
+        "epic": "INTGPT-921",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [],
+        "projectId": 24766
+      },
+      {
+        "id": 2471535,
+        "key": "INTGPT-781",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "POC: S3 and folder configuration",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "leticiasarahy.rivera@thermofisher.com",
+        "assigneeName": "Rivera, Sarahy",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=leticiasahary.rivera%40thermofisher.com&avatarId=19499",
+        "hasCustomUserAvatar": true,
+        "epicId": "2516860",
+        "epic": "INTGPT-921",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [],
+        "projectId": 24766
+      },
+      {
+        "id": 2493268,
+        "key": "INTGPT-848",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "QW: Improvements to Prompt examples (icon and usage guideline)",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "antonio.rosales@thermofisher.com",
+        "assigneeName": "Rosales, Antonio A.",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=JIRAUSER40724&avatarId=25514",
+        "hasCustomUserAvatar": true,
+        "epicId": "2464611",
+        "epic": "INTGPT-744",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "5",
+        "fixVersions": [
+          45683
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2497424,
+        "key": "INTGPT-863",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Setup dummy page for Redirect Testing",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "fernando.arellano@thermofisher.com",
+        "assigneeName": "Arellano, Fernando",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?avatarId=14310",
+        "hasCustomUserAvatar": true,
+        "epicId": "2463472",
+        "epic": "INTGPT-735",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 0.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "5",
+        "fixVersions": [],
+        "projectId": 24766
+      }
+    ],
+    "issuesNotCompletedInCurrentSprint": [
+      {
+        "id": 2497694,
+        "key": "INTGPT-864",
+        "hidden": false,
+        "typeId": "6",
+        "summary": "Process PDF by creating JSON Embeddings",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2516860",
+        "epic": "INTGPT-921",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "3",
+        "fixVersions": [
+          45956
+        ],
+        "projectId": 24766
+      }
+    ],
+    "puntedIssues": [
+      {
+        "id": 2471513,
+        "key": "INTGPT-779",
+        "hidden": false,
+        "typeId": "2",
+        "summary": "Upload and Process Documents",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "julio.zamarripa@thermofisher.com",
+        "assigneeName": "Zamarripa, Julio C.",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=JIRAUSER40862&avatarId=25296",
+        "hasCustomUserAvatar": true,
+        "epicId": "2516860",
+        "epic": "INTGPT-921",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "statusId": "1",
+        "fixVersions": [
+          45956
+        ],
+        "projectId": 24766
+      }
+    ],
+    "issuesCompletedInAnotherSprint": [],
+    "entityData": {
+      "statuses": {
+        "1": {
+          "statusUrl": "/images/icons/statuses/open.png",
+          "statusName": "Open",
+          "status": {
+            "id": "1",
+            "name": "Open",
+            "description": "The issue is open and ready for the assignee to start work on it.",
+            "iconUrl": "https://jira.amer.thermo.com/images/icons/statuses/open.png",
+            "statusCategory": {
+              "id": "2",
+              "key": "new",
+              "colorName": "blue-gray"
+            }
+          }
+        },
+        "3": {
+          "statusUrl": "/images/icons/statuses/generic.png",
+          "statusName": "In Progress",
+          "status": {
+            "id": "3",
+            "name": "In Progress",
+            "description": "",
+            "iconUrl": "https://jira.amer.thermo.com/images/icons/statuses/generic.png",
+            "statusCategory": {
+              "id": "4",
+              "key": "indeterminate",
+              "colorName": "yellow"
+            }
+          }
+        },
+        "5": {
+          "statusUrl": "https://jira.amer.thermo.com/images/icons/statuses/resolved.png",
+          "statusName": "Resolved",
+          "status": {
+            "id": "5",
+            "name": "Resolved",
+            "description": "A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed.",
+            "iconUrl": "https://jira.amer.thermo.com/images/icons/statuses/resolved.png",
+            "statusCategory": {
+              "id": "3",
+              "key": "done",
+              "colorName": "green"
+            }
+          }
+        }
+      },
+      "priorities": {
+        "10000": {
+          "priorityName": "Highest",
+          "priorityUrl": "https://jira.amer.thermo.com/images/icons/priorities/critical.svg"
+        },
+        "8": {
+          "priorityName": "P2 - High",
+          "priorityUrl": "https://jira.amer.thermo.com/images/icons/priorities/major.svg"
+        }
+      },
+      "types": {
+        "1": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=12493&avatarType=issuetype",
+          "typeName": "Bug"
+        },
+        "2": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=12501&avatarType=issuetype",
+          "typeName": "New Feature"
+        },
+        "3": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=12508&avatarType=issuetype",
+          "typeName": "Task"
+        },
+        "4": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=12500&avatarType=issuetype",
+          "typeName": "Improvement"
+        },
+        "6": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=13093&avatarType=issuetype",
+          "typeName": "Story"
+        }
+      },
+      "epics": {
+        "2464611": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-744",
+            "epicColor": "ghx-label-14",
+            "text": "General Improv. Q4 23 - T4"
+          }
+        },
+        "2463472": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-735",
+            "epicColor": "ghx-label-13",
+            "text": "NFR and Sec Q4 23 - T4"
+          }
+        },
+        "2463485": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-737",
+            "epicColor": "ghx-label-4",
+            "text": "Bugs and Errors Q4 23 - T4"
+          }
+        },
+        "2463210": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-729",
+            "epicColor": "ghx-label-4",
+            "text": "Pub Sharing User Flow - T4"
+          }
+        },
+        "2516860": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-921",
+            "epicColor": "ghx-label-11",
+            "text": "Ask My Docs MVP"
+          }
+        }
+      }
+    },
+    "completedIssuesInitialEstimateSum": {
+      "value": 22.0,
+      "text": "22.0"
+    },
+    "completedIssuesEstimateSum": {
+      "value": 23.0,
+      "text": "23.0"
+    },
+    "issuesNotCompletedInitialEstimateSum": {
+      "text": "null"
+    },
+    "issuesNotCompletedEstimateSum": {
+      "value": 8.0,
+      "text": "8.0"
+    },
+    "allIssuesEstimateSum": {
+      "value": 56.0,
+      "text": "56.0"
+    },
+    "puntedIssuesInitialEstimateSum": {
+      "value": 8.0,
+      "text": "8.0"
+    },
+    "puntedIssuesEstimateSum": {
+      "value": 8.0,
+      "text": "8.0"
+    },
+    "issuesCompletedInAnotherSprintInitialEstimateSum": {
+      "text": "null"
+    },
+    "issuesCompletedInAnotherSprintEstimateSum": {
+      "text": "null"
+    },
+    "issueKeysAddedDuringSprint": {
+      "INTGPT-863": true,
+      "INTGPT-864": true,
+      "INTGPT-779": true,
+      "INTGPT-848": true
+    }
+  },
+  "sprint": {
+    "id": 36928,
+    "sequence": 36928,
+    "name": "Gene.AI Delivery Sprint 12",
+    "state": "CLOSED",
+    "goal": "PDF Docs Pre-requisites (POCs) and Public prompts view",
+    "autoStartStop": false,
+    "startDate": "09/Oct/23 5:00 AM",
+    "endDate": "20/Oct/23 8:59 PM",
+    "activatedDate": "09/Oct/23 9:17 AM",
+    "completeDate": "20/Oct/23 7:09 PM",
+    "canUpdateSprint": true,
+    "canStartStopSprint": true,
+    "canUpdateDates": true,
+    "remoteLinks": [],
+    "daysRemaining": 0
+  },
+  "lastUserToClose": "<a class=\"user-hover\" rel=\"sudarshan.kashyap@thermofisher.com\" id=\"_sudarshan.kashyap@thermofisher.com\" href=\"/secure/ViewProfile.jspa?name=sudarshan.kashyap%40thermofisher.com\">Kashyap, Sudarshan</a>",
+  "userWhoStarted": "<a class=\"user-hover\" rel=\"adrian.favela@thermofisher.com\" id=\"_adrian.favela@thermofisher.com\" href=\"/secure/ViewProfile.jspa?name=adrian.favela%40thermofisher.com\">Favela, Adrian C.</a>",
+  "supportsPages": true
+}
