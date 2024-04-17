@@ -1,6 +1,6 @@
 import json
 
-from entities import jira_issue
+from entities import jira_issue, sprint_report_api
 
 
 def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
