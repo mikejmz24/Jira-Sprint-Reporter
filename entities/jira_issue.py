@@ -45,8 +45,11 @@ class JiraIssue:
         reporter: str = utils.get_object_str(obj, "fields.reporter.name")
         created: datetime = utils.get_object_datetime(obj, "fields.created")
         updated: datetime = utils.get_object_datetime(obj, "fields.updated")
-        resolution: Optional[str] = utils.get_optional_str(
-            obj, "fields.resolution.name"
+        # resolution: Optional[str] = utils.get_optional_str(
+        #     obj, "fields.resolution.name"
+        # )
+        resolution: Optional[str] = str(
+            utils.get_optional_object(obj, "fields.resolution.name")
         )
         resolved: Optional[datetime] = utils.get_optional_datetime(
             obj, "fields.resolutiondate"

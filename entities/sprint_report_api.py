@@ -102,7 +102,9 @@ class SprintReport:
     goal: str
     start_date: datetime
     end_date: datetime
-    completed_issues: list[JiraIssueSprintReport]
+    completed_issues: Optional[list[JiraIssueSprintReport]] = None
+    not_completed_issues: Optional[list[JiraIssueSprintReport]] = None
+    removed_issues: Optional[list[JiraIssueSprintReport]] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "SprintReport":
@@ -128,11 +130,30 @@ class SprintReport:
         end_date: datetime = utils.get_object_datetime_sprint_report(
             obj, "sprint.completeDate"
         )
-        completed_issues: list[JiraIssueSprintReport] = (
-            utils.get_jira_issue_sprint_report_list(obj, "contents.completedIssues")
+        completed_issues: Optional[list[JiraIssueSprintReport]] = (
+            utils.get_optional_jira_issue_sprint_report_list(
+                obj, "contents.completedIssues"
+            )
+        )
+        not_completed_issues: Optional[list[JiraIssueSprintReport]] = (
+            utils.get_optional_jira_issue_sprint_report_list(
+                obj, "contents.issuesNotCompletedInCurrentSprint"
+            )
+        )
+        removed_issues: Optional[list[JiraIssueSprintReport]] = (
+            utils.get_optional_jira_issue_sprint_report_list(
+                obj, "contents.puntedIssues"
+            )
         )
         return SprintReport(
-            sprint_id, name, goal, start_date, end_date, completed_issues
+            sprint_id,
+            name,
+            goal,
+            start_date,
+            end_date,
+            completed_issues,
+            not_completed_issues,
+            removed_issues,
         )
 
     def to_dict(self) -> dict:
@@ -150,6 +171,8 @@ class SprintReport:
         result["start_date"] = str(self.start_date)
         result["end_date"] = str(self.end_date)
         result["completed_issues"] = self.completed_issues
+        result["not_completed_issues"] = self.not_completed_issues
+        result["removed_issues"] = self.removed_issues
         return result
 
 

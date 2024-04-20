@@ -4,6 +4,14 @@ from typing import Any, Optional
 from entities import sprint_report_api
 
 
+def get_object(object_name: Any, path: str) -> object:
+    path_list: list[str] = path.split(".")
+    result: Any = object_name
+    for element in path_list:
+        result = result.get(element)
+    return result
+
+
 def build_get_object_path(object_name: str, name: str) -> str:
     path_list: list[str] = name.split(".")
     result_string: str = object_name + '.get("'
@@ -37,11 +45,8 @@ def get_object_list_of_str(object_name: Any, path: str) -> list[str]:
 
 
 def get_object_simple_list(object_name: Any, path: str) -> list[str]:
-    path_list: list[str] = path.split(".")
-    result: Any = object_name
     result_list: list[str] = []
-    for element in path_list:
-        result = result.get(element)
+    result: Any = get_object(object_name, path)
     for item in result:
         result_list.append(item)
     return result_list
@@ -50,12 +55,8 @@ def get_object_simple_list(object_name: Any, path: str) -> list[str]:
 def get_jira_issue_sprint_report_list(
     object_name: Any, path: str
 ) -> list[sprint_report_api.JiraIssueSprintReport]:
-    path_list: list[str] = path.split(".")
-    result: Any = object_name
     result_list: list[sprint_report_api.JiraIssueSprintReport] = []
-    for element in path_list:
-        result = result.get(element)
-        print(result)
+    result: Any = get_object(object_name, path)
     for item in result:
         completed_issue: sprint_report_api.JiraIssueSprintReport = (
             sprint_report_api.JiraIssueSprintReport.from_dict(item)
@@ -80,22 +81,36 @@ def get_object_datetime_sprint_report(
     return datetime.strptime(get_object_str(object_name, path), date_format)
 
 
+def get_optional_object(object_name: Any, path: str) -> Optional[object]:
+    result: Optional[object] = get_object(object_name, path)
+    return result
+
+
 def get_optional_str(object_name: Any, path: str) -> Optional[str]:
-    result: Optional[str] = None
-    if path in object_name:
-        result: Optional[str] = get_object_str(object_name, path)
+    result: Optional[str] = str(get_object(object_name, path))
     return result
 
 
 def get_optional_int(object_name: Any, path: str) -> Optional[int]:
-    result: Optional[int] = None
-    if path in object_name:
-        result: Optional[int] = int(get_object_str(object_name, path))
+    result: Optional[int] = (
+        int(get_object_str(object_name, path))
+        if get_object(object_name, path)
+        else None
+    )
     return result
 
 
 def get_optional_datetime(object_name: Any, path: str) -> Optional[datetime]:
-    result: Optional[datetime] = None
-    if path in object_name:
-        result: Optional[datetime] = get_object_datetime(object_name, path)
+    result: Optional[datetime] = get_object_datetime(object_name, path)
+    return result
+
+
+def get_optional_jira_issue_sprint_report_list(
+    object_name: Any, path: str
+) -> Optional[list[sprint_report_api.JiraIssueSprintReport]]:
+    result: Optional[list[sprint_report_api.JiraIssueSprintReport]] = None
+    if get_object(object_name, path):
+        result: Optional[list[sprint_report_api.JiraIssueSprintReport]] = (
+            get_jira_issue_sprint_report_list(object_name, path)
+        )
     return result
