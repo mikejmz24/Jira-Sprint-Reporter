@@ -53,8 +53,11 @@ class JiraIssueSprintReport:
         jira_issue_id: int = int(utils.get_object_str(obj, "id"))
         key: str = utils.get_object_str(obj, "key")
         summary: str = utils.get_object_str(obj, "key")
-        original_estimate: int = int(
-            utils.get_object_str(obj, "currentEstimateStatistic.statFieldValue.value")
+        # original_estimate: int = int(
+        #     utils.get_object_str(obj, "currentEstimateStatistic.statFieldValue.value")
+        # )
+        original_estimate: int = utils.get_object_int(
+            obj, "currentEstimateStatistic.statFieldValue.value"
         )
         final_estimate: Optional[int] = utils.get_optional_int(
             obj, "estimateStatistic.statFieldValue.value"
