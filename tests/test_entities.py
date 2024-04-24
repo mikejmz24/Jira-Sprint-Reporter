@@ -1,6 +1,10 @@
 import json
+from typing import Optional
+
+import requests
 
 from entities import jira_issue, sprint_report_api
+from jira_sprint_reporter import sprint_report_queries
 
 
 def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
@@ -39,3 +43,38 @@ def test_sprint_report_from_dict_returns_sprint_report_object_type() -> None:
 
         print("repr() string: ", repr(json_data))
         assert isinstance(json_data, sprint_report_api.SprintReport)
+
+
+class TestQuerySprintReport:
+    def test_sprint_36928_returns_eight_completed_issues(self) -> None:
+        sprint_36928_data: sprint_report_api.SprintReport = (
+            sprint_report_queries.get_sprint_report_data("6363", "36928")
+        )
+        sprint_36928_completed_issues: Optional[
+            list[sprint_report_api.JiraIssueSprintReport]
+        ] = sprint_36928_data.completed_issues
+        result: int = (
+            len(sprint_36928_completed_issues) if sprint_36928_completed_issues else 0
+        )
+        assert result == 8
+
+    def test_sprint_36928_returns_one_not_completed_issues(self) -> None:
+        sprint_36928_data: sprint_report_api.SprintReport = (
+            sprint_report_queries.get_sprint_report_data("6363", "36928")
+        )
+        sprint_36928_completed_issues: Optional[
+            list[sprint_report_api.JiraIssueSprintReport]
+        ] = sprint_36928_data.not_completed_issues
+        result: int = (
+            len(sprint_36928_completed_issues) if sprint_36928_completed_issues else 0
+        )
+        assert result == 1
+
+    # def test_sprint_36928_returns_one_issue_removed_from_sprint(self) -> None:
+    #     assert False
+    #
+    # def test_sprint_36928_returns_four_issues_added_to_sprint(self) -> None:
+    #     assert False
+    #
+    # def test_sprint_36928_returns_three_issues_with_changed_estimations(self) -> None:
+    #     assert False
