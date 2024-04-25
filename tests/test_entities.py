@@ -1,10 +1,16 @@
 import json
-from typing import Optional
+from typing import Generator, Optional
 
-import requests
+import pytest
 
-from entities import jira_issue, sprint_report_api
-from jira_sprint_reporter import sprint_report_queries
+from entities.jira_issue import JiraIssue, jira_issue_from_dict, jira_issue_to_dict
+from entities.sprint_report_api import (
+    JiraIssueSprintReport,
+    SprintReport,
+    get_jira_issues_with_estimation_change,
+    sprint_report_from_dict,
+)
+from jira_sprint_reporter.sprint_report_queries import get_sprint_report_data
 
 
 def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
@@ -12,11 +18,11 @@ def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
     when a valid JSON is passed as a parameter"""
     with open("json_files/intgpt-109.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
-        json_data: jira_issue.JiraIssue = jira_issue.jira_issue_from_dict(data)
+        json_data: JiraIssue = jira_issue_from_dict(data)
         print("str() string: ", str(json_data))
 
         print("repr() string: ", repr(json_data))
-        assert isinstance(json_data, jira_issue.JiraIssue)
+        assert isinstance(json_data, JiraIssue)
 
 
 def test_jira_issue_to_dict_returns_json_object_type() -> None:
@@ -25,8 +31,8 @@ def test_jira_issue_to_dict_returns_json_object_type() -> None:
     with open("json_files/intgpt-109.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
         print(type(data))
-        json_data: jira_issue.JiraIssue = jira_issue.jira_issue_from_dict(data)
-        json_response = jira_issue.jira_issue_to_dict(json_data)
+        json_data: JiraIssue = jira_issue_from_dict(data)
+        json_response = jira_issue_to_dict(json_data)
         print(json_response)
         assert isinstance(json_response, dict)
 
@@ -36,45 +42,55 @@ def test_sprint_report_from_dict_returns_sprint_report_object_type() -> None:
     when a valid JSON object is passed as parameter"""
     with open("json_files/sprint-36928.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
-        json_data: sprint_report_api.SprintReport = (
-            sprint_report_api.sprint_report_from_dict(data)
-        )
+        json_data: SprintReport = sprint_report_from_dict(data)
         print("str() string: ", str(json_data))
 
         print("repr() string: ", repr(json_data))
-        assert isinstance(json_data, sprint_report_api.SprintReport)
+        assert isinstance(json_data, SprintReport)
 
 
 class TestQuerySprintReport:
-    def test_sprint_36928_returns_eight_completed_issues(self) -> None:
-        sprint_36928_data: sprint_report_api.SprintReport = (
-            sprint_report_queries.get_sprint_report_data("6363", "36928")
-        )
-        sprint_36928_completed_issues: Optional[
-            list[sprint_report_api.JiraIssueSprintReport]
-        ] = sprint_36928_data.completed_issues
+    @pytest.fixture(scope="class")
+    def sprint_data(self) -> Generator[SprintReport, None, None]:
+        yield get_sprint_report_data("6363", "36928")
+
+    def test_sprint_36928_returns_eight_completed_issues(
+        self, sprint_data: SprintReport
+    ) -> None:
         result: int = (
-            len(sprint_36928_completed_issues) if sprint_36928_completed_issues else 0
+            len(sprint_data.completed_issues) if sprint_data.completed_issues else 0
         )
         assert result == 8
 
-    def test_sprint_36928_returns_one_not_completed_issues(self) -> None:
-        sprint_36928_data: sprint_report_api.SprintReport = (
-            sprint_report_queries.get_sprint_report_data("6363", "36928")
-        )
-        sprint_36928_completed_issues: Optional[
-            list[sprint_report_api.JiraIssueSprintReport]
-        ] = sprint_36928_data.not_completed_issues
+    def test_sprint_36928_returns_one_not_completed_issues(
+        self, sprint_data: SprintReport
+    ) -> None:
         result: int = (
-            len(sprint_36928_completed_issues) if sprint_36928_completed_issues else 0
+            len(sprint_data.not_completed_issues)
+            if sprint_data.not_completed_issues
+            else 0
         )
         assert result == 1
 
-    # def test_sprint_36928_returns_one_issue_removed_from_sprint(self) -> None:
-    #     assert False
-    #
-    # def test_sprint_36928_returns_four_issues_added_to_sprint(self) -> None:
-    #     assert False
-    #
-    # def test_sprint_36928_returns_three_issues_with_changed_estimations(self) -> None:
-    #     assert False
+    def test_sprint_36928_returns_one_issue_removed_from_sprint(
+        self, sprint_data: SprintReport
+    ) -> None:
+        result: int = (
+            len(sprint_data.removed_issues) if sprint_data.removed_issues else 0
+        )
+        assert result == 1
+
+    def test_sprint_36928_returns_four_issues_added_to_sprint(
+        self, sprint_data: SprintReport
+    ) -> None:
+        result: int = len(sprint_data.added_issues) if sprint_data.added_issues else 0
+        assert result == 4
+
+    def test_sprint_36928_returns_three_issues_with_changed_estimations(
+        self, sprint_data
+    ) -> None:
+        issue_list: Optional[list[JiraIssueSprintReport]] = (
+            get_jira_issues_with_estimation_change(sprint_data)
+        )
+        result: int = len(issue_list) if issue_list else 0
+        assert result == 4

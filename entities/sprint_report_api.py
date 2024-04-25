@@ -108,6 +108,8 @@ class SprintReport:
     completed_issues: Optional[list[JiraIssueSprintReport]] = None
     not_completed_issues: Optional[list[JiraIssueSprintReport]] = None
     removed_issues: Optional[list[JiraIssueSprintReport]] = None
+    issues_completed_outside: Optional[list[JiraIssueSprintReport]] = None
+    added_issues: Optional[dict] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "SprintReport":
@@ -134,19 +136,23 @@ class SprintReport:
             obj, "sprint.completeDate"
         )
         completed_issues: Optional[list[JiraIssueSprintReport]] = (
-            utils.get_optional_jira_issue_sprint_report_list(
-                obj, "contents.completedIssues"
-            )
+            get_optional_jira_issue_sprint_report_list(obj, "contents.completedIssues")
         )
         not_completed_issues: Optional[list[JiraIssueSprintReport]] = (
-            utils.get_optional_jira_issue_sprint_report_list(
+            get_optional_jira_issue_sprint_report_list(
                 obj, "contents.issuesNotCompletedInCurrentSprint"
             )
         )
         removed_issues: Optional[list[JiraIssueSprintReport]] = (
-            utils.get_optional_jira_issue_sprint_report_list(
-                obj, "contents.puntedIssues"
+            get_optional_jira_issue_sprint_report_list(obj, "contents.puntedIssues")
+        )
+        issues_completed_outside: Optional[list[JiraIssueSprintReport]] = (
+            get_optional_jira_issue_sprint_report_list(
+                obj, "contents.issuesCompletedInAnotherSprint"
             )
+        )
+        added_issues: Optional[dict] = utils.get_object(
+            obj, "contents.issueKeysAddedDuringSprint"
         )
         return SprintReport(
             sprint_id,
@@ -157,6 +163,8 @@ class SprintReport:
             completed_issues,
             not_completed_issues,
             removed_issues,
+            issues_completed_outside,
+            added_issues,
         )
 
     def to_dict(self) -> dict:
@@ -176,6 +184,8 @@ class SprintReport:
         result["completed_issues"] = self.completed_issues
         result["not_completed_issues"] = self.not_completed_issues
         result["removed_issues"] = self.removed_issues
+        result["issues_completed_outside"] = self.issues_completed_outside
+        result["added_issues"] = self.added_issues
         return result
 
 
@@ -220,3 +230,57 @@ def jira_issue_sprint_report_from_dict(s: Any) -> JiraIssueSprintReport:
 
 def jira_issue_sprint_report_to_dict(s: JiraIssueSprintReport) -> dict:
     return JiraIssueSprintReport.to_dict(s)
+
+
+def get_optional_jira_issue_sprint_report_list(
+    object_name: Any, path: str
+) -> Optional[list[JiraIssueSprintReport]]:
+    result: Optional[list[JiraIssueSprintReport]] = None
+    result = utils.get_optional_object(object_name, path)
+    return get_jira_issue_sprint_report_list(object_name, path) if result else None
+
+
+def get_jira_issue_sprint_report_list(
+    object_name: Any, path: str
+) -> list[JiraIssueSprintReport]:
+    return [
+        jira_issue_sprint_report_from_dict(item)
+        for item in utils.get_object(object_name, path)
+    ]
+
+
+def get_all_jira_issues_from_sprint_report(
+    object_name: SprintReport,
+) -> list[JiraIssueSprintReport]:
+    result: list[JiraIssueSprintReport] = []
+    result = append_jira_issues_sprint_report(result, object_name.completed_issues)
+    result = append_jira_issues_sprint_report(result, object_name.not_completed_issues)
+    result = append_jira_issues_sprint_report(result, object_name.removed_issues)
+    result = append_jira_issues_sprint_report(
+        result, object_name.issues_completed_outside
+    )
+    return result
+
+
+def append_jira_issues_sprint_report(
+    result: list[JiraIssueSprintReport],
+    items_list: Optional[list[JiraIssueSprintReport]],
+) -> list[JiraIssueSprintReport]:
+    if items_list:
+        for item in items_list:
+            result.append(item)
+    return result
+
+
+def get_jira_issues_with_estimation_change(
+    sprint_data: SprintReport,
+) -> Optional[list[JiraIssueSprintReport]]:
+    result: Optional[list[JiraIssueSprintReport]] = []
+    issues: Optional[list[JiraIssueSprintReport]] = (
+        get_all_jira_issues_from_sprint_report(sprint_data)
+    )
+    if issues:
+        for issue in issues:
+            if issue.final_estimate != issue.original_estimate:
+                result.append(issue)
+    return result

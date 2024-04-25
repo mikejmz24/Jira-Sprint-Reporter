@@ -1,8 +1,6 @@
 from datetime import datetime
 from typing import Any, Optional
 
-from entities import sprint_report_api
-
 
 def get_object(object_name: Any, path: str) -> Any:
     for element in path.split("."):
@@ -42,15 +40,6 @@ def get_object_simple_list(object_name: Any, path: str) -> list[str]:
     return list(get_object(object_name, path))
 
 
-def get_jira_issue_sprint_report_list(
-    object_name: Any, path: str
-) -> list[sprint_report_api.JiraIssueSprintReport]:
-    return [
-        sprint_report_api.jira_issue_sprint_report_from_dict(item)
-        for item in get_object(object_name, path)
-    ]
-
-
 def get_object_datetime(
     object_name: Any, path: str, date_format: str = "%Y-%m-%dT%H:%M:%S"
 ) -> datetime:
@@ -81,11 +70,3 @@ def get_optional_int(object_name: Any, path: str) -> Optional[int]:
 
 def get_optional_datetime(object_name: Any, path: str) -> Optional[datetime]:
     return get_object_datetime(object_name, path)
-
-
-def get_optional_jira_issue_sprint_report_list(
-    object_name: Any, path: str
-) -> Optional[list[sprint_report_api.JiraIssueSprintReport]]:
-    result: Optional[list[sprint_report_api.JiraIssueSprintReport]] = None
-    result = get_optional_object(object_name, path)
-    return get_jira_issue_sprint_report_list(object_name, path) if result else None
