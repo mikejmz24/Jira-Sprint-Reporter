@@ -99,12 +99,13 @@ class SprintReport:
     """
 
     ## TODO: Add the rest of the SprintReport fields
-    ## Include issues that were planned originally, removed, and added to a Sprint
+    ## Add method to clean the types with only the key and name
     sprint_id: int
     name: str
     goal: str
     start_date: datetime
     end_date: datetime
+    issue_types: dict
     completed_issues: Optional[list[JiraIssueSprintReport]] = None
     not_completed_issues: Optional[list[JiraIssueSprintReport]] = None
     removed_issues: Optional[list[JiraIssueSprintReport]] = None
@@ -135,6 +136,7 @@ class SprintReport:
         end_date: datetime = utils.get_object_datetime_sprint_report(
             obj, "sprint.completeDate"
         )
+        issue_types: dict = utils.get_object(obj, "contents.entityData.types")
         completed_issues: Optional[list[JiraIssueSprintReport]] = (
             get_optional_jira_issue_sprint_report_list(obj, "contents.completedIssues")
         )
@@ -160,6 +162,7 @@ class SprintReport:
             goal,
             start_date,
             end_date,
+            issue_types,
             completed_issues,
             not_completed_issues,
             removed_issues,
@@ -181,6 +184,7 @@ class SprintReport:
         result["goal"] = self.goal
         result["start_date"] = str(self.start_date)
         result["end_date"] = str(self.end_date)
+        result["issue_types"] = self.issue_types
         result["completed_issues"] = self.completed_issues
         result["not_completed_issues"] = self.not_completed_issues
         result["removed_issues"] = self.removed_issues
