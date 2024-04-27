@@ -30,7 +30,9 @@ class JiraIssueSprintReport:
 
     jira_issue_id: int
     key: str
+    issue_type: str
     summary: str
+    assignee: str
     original_estimate: int
     final_estimate: Optional[int] = None
 
@@ -52,10 +54,9 @@ class JiraIssueSprintReport:
         """
         jira_issue_id: int = int(utils.get_object_str(obj, "id"))
         key: str = utils.get_object_str(obj, "key")
-        summary: str = utils.get_object_str(obj, "key")
-        # original_estimate: int = int(
-        #     utils.get_object_str(obj, "currentEstimateStatistic.statFieldValue.value")
-        # )
+        issue_type: str = utils.get_object_str(obj, "typeId")
+        summary: str = utils.get_object_str(obj, "summary")
+        assignee: str = utils.get_object_str(obj, "assignee")
         original_estimate: int = utils.get_object_int(
             obj, "currentEstimateStatistic.statFieldValue.value"
         )
@@ -63,7 +64,13 @@ class JiraIssueSprintReport:
             obj, "estimateStatistic.statFieldValue.value"
         )
         return JiraIssueSprintReport(
-            jira_issue_id, key, summary, original_estimate, final_estimate
+            jira_issue_id,
+            key,
+            issue_type,
+            summary,
+            assignee,
+            original_estimate,
+            final_estimate,
         )
 
     def to_dict(self) -> dict:
@@ -77,8 +84,10 @@ class JiraIssueSprintReport:
         """
         result: dict = {}
         result["jira_issue_id"] = int(self.jira_issue_id)
-        result["key"] = str(self.key)
-        result["summary"] = str(self.summary)
+        result["key"] = self.key
+        result["jira_issue_id"] = self.issue_type
+        result["summary"] = self.summary
+        result["assignee"] = self.assignee
         result["original_estimate"] = int(self.original_estimate)
         if self.final_estimate is not None:
             result["final_estimate"] = int(self.final_estimate)
@@ -184,7 +193,7 @@ class SprintReport:
         result["goal"] = self.goal
         result["start_date"] = str(self.start_date)
         result["end_date"] = str(self.end_date)
-        result["issue_types"] = self.issue_types
+        # result["issue_types"] = self.issue_types
         result["completed_issues"] = self.completed_issues
         result["not_completed_issues"] = self.not_completed_issues
         result["removed_issues"] = self.removed_issues
@@ -288,3 +297,17 @@ def get_jira_issues_with_estimation_change(
             if issue.final_estimate != issue.original_estimate:
                 result.append(issue)
     return result
+
+
+def clean_issue_types(obj: dict) -> dict:
+    return {item: data.get("typeName") for item, data in obj.items()}
+
+
+def set_issue_type(
+    jira_issue: JiraIssueSprintReport, types: dict
+) -> JiraIssueSprintReport:
+    types = clean_issue_types(types)
+    for type_key, type_value in types.items():
+        if jira_issue.issue_type == type_key:
+            jira_issue.issue_type = type_value
+    return jira_issue

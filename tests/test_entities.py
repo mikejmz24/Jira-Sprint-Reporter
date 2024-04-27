@@ -7,7 +7,10 @@ from entities.jira_issue import JiraIssue, jira_issue_from_dict, jira_issue_to_d
 from entities.sprint_report_api import (
     JiraIssueSprintReport,
     SprintReport,
+    clean_issue_types,
+    get_all_jira_issues_from_sprint_report,
     get_jira_issues_with_estimation_change,
+    set_issue_type,
     sprint_report_from_dict,
 )
 from jira_sprint_reporter.sprint_report_queries import get_sprint_report_data
@@ -47,6 +50,34 @@ def test_sprint_report_from_dict_returns_sprint_report_object_type() -> None:
 
         print("repr() string: ", repr(json_data))
         assert isinstance(json_data, SprintReport)
+
+
+class TestSprintReportMethods:
+    @pytest.fixture(scope="class")
+    def sprint_data(self) -> Generator[SprintReport, None, None]:
+        with open("json_files/sprint-36928.json", encoding="utf-8") as json_file:
+            data = json.load(json_file)
+            yield sprint_report_from_dict(data)
+
+    def test_return_types_dict(self, sprint_data: SprintReport) -> None:
+        issues: dict = clean_issue_types(sprint_data.issue_types)
+        print(issues)
+        assert len(issues) == 5
+
+    def test_get_all_jira_items_list(self, sprint_data: SprintReport) -> None:
+        jira_issues: Optional[list[JiraIssueSprintReport]] = (
+            get_all_jira_issues_from_sprint_report(sprint_data)
+        )
+        result: int = len(jira_issues) if jira_issues else 0
+        assert result == 10
+
+    def test_set_jira_issue_type(self, sprint_data: SprintReport) -> None:
+        completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
+            2
+        ]
+        issue_types: dict = sprint_data.issue_types
+        result: JiraIssueSprintReport = set_issue_type(completed_issue, issue_types)
+        assert result.issue_type == "Bug"
 
 
 class TestQuerySprintReport:
