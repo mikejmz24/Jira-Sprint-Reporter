@@ -85,13 +85,23 @@ class JiraIssueSprintReport:
         result: dict = {}
         result["jira_issue_id"] = int(self.jira_issue_id)
         result["key"] = self.key
-        result["jira_issue_id"] = self.issue_type
+        result["issue_type"] = self.issue_type
         result["summary"] = self.summary
         result["assignee"] = self.assignee
         result["original_estimate"] = int(self.original_estimate)
         if self.final_estimate is not None:
             result["final_estimate"] = int(self.final_estimate)
         return result
+
+    def __repr__(self):
+        return f"""
+        jira_issue_id: {self.jira_issue_id}
+        key: {self.key}
+        issue_type: {self.issue_type}
+        summary: {self.summary}
+        assignee: {self.assignee}
+        original_estimate: {self.original_estimate}
+        final_estimate: {self.final_estimate}"""
 
 
 @dataclass
@@ -311,3 +321,17 @@ def set_issue_type(
         if jira_issue.issue_type == type_key:
             jira_issue.issue_type = type_value
     return jira_issue
+
+
+def get_active_developers(sprint: SprintReport) -> set:
+    issue_list: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
+        sprint
+    )
+    # result: list[str] = []
+    # for item in issue_list:
+    #     if item.assignee is not None:
+    #         result.append(item.assignee)
+    # return set(result)
+    for issue in issue_list:
+        print(issue.assignee)
+    return {item.assignee for item in issue_list if item.assignee != "None"}

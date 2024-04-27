@@ -8,6 +8,7 @@ from entities.sprint_report_api import (
     JiraIssueSprintReport,
     SprintReport,
     clean_issue_types,
+    get_active_developers,
     get_all_jira_issues_from_sprint_report,
     get_jira_issues_with_estimation_change,
     set_issue_type,
@@ -78,6 +79,10 @@ class TestSprintReportMethods:
         issue_types: dict = sprint_data.issue_types
         result: JiraIssueSprintReport = set_issue_type(completed_issue, issue_types)
         assert result.issue_type == "Bug"
+
+    def test_get_all_sprint_developers(self, sprint_data) -> None:
+        result: set = get_active_developers(sprint_data)
+        assert len(result) == 4
 
 
 class TestQuerySprintReport:
