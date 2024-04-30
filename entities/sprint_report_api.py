@@ -117,8 +117,6 @@ class SprintReport:
 
     """
 
-    ## TODO: Add the rest of the SprintReport fields
-    ## Add method to clean the types with only the key and name
     sprint_id: int
     name: str
     goal: str
@@ -327,11 +325,6 @@ def get_active_developers(sprint: SprintReport) -> set:
     issue_list: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
         sprint
     )
-    # result: list[str] = []
-    # for item in issue_list:
-    #     if item.assignee is not None:
-    #         result.append(item.assignee)
-    # return set(result)
     for issue in issue_list:
         print(issue.assignee)
     return {item.assignee for item in issue_list if item.assignee != "None"}

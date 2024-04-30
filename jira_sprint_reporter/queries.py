@@ -1,3 +1,4 @@
+import json
 import os
 
 import requests
@@ -33,8 +34,51 @@ def query_jira_issue_to_dict_or_json(key: str) -> dict:
     return result
 
 
+def create_confluence_page(ancestor: str) -> requests.Response:
+    base_url: str = "https://confluence.amer.thermo.com/rest/api/content"
+    headers: dict = {
+        "Accept": "application/json",
+        "Authorization": os.environ.get("PASSWORD"),
+        "Content-Type": "application/json",
+    }
+    content_value: str = """
+    <h1>This is a content added from a Python script</h1>
+    This is a normal paragraph test...
+    <br /><br />
+
+    This below is a macro<br />
+    <ac:structured-macro ac:name="info">
+    <ac:parameter ac:name="title">Info Macro Title</ac:parameter>
+    <ac:rich-text-body>
+    Some text goes inside the macro...
+    </ac:rich-text-body>
+    </ac:structured-macro>
+    """
+    data: dict = {
+        "title": "Test from Python Requests",
+        "type": "page",
+        "space": {"key": "FIREGENE"},
+        "status": "current",
+        "ancestors": [{"id": ancestor}],
+        "body": {
+            "storage": {
+                "value": content_value,
+                "representation": "storage",
+            }
+        },
+        "metadata": {"properties": {"editor": {"value": "v2"}}},
+    }
+
+    # return requests.request("POST", base_url, headers=headers, json=data)
+    return requests.post(base_url, headers=headers, json=data)
+
+
 if __name__ == "__main__":
-    print("enter a jira issue to show the results on screen :) ")
-    jira_issue = input()
-    data: dict = query_jira_issue_to_dict_or_json(jira_issue)
-    print(data)
+    # print("enter a jira issue to show the results on screen :) ")
+    # jira_issue = input()
+    # data: dict = query_jira_issue_to_dict_or_json(jira_issue)
+    # print(data)
+    print("Type the ancestor where to create the confluence page")
+    page = input()
+    res: requests.Response = create_confluence_page(page)
+    print(f"status code: {res.status_code}")
