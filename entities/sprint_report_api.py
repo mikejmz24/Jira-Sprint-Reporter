@@ -33,8 +33,17 @@ class JiraIssueSprintReport:
     issue_type: str
     summary: str
     assignee: str
+    issue_status: str
+    issue_priority: str
+    resolution: str
     original_estimate: int
     final_estimate: Optional[int] = None
+
+    def __getitem__(self, key: str) -> Any:
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        setattr(self, key, value)
 
     @staticmethod
     def from_dict(obj: Any) -> "JiraIssueSprintReport":
@@ -56,7 +65,10 @@ class JiraIssueSprintReport:
         key: str = utils.get_object_str(obj, "key")
         issue_type: str = utils.get_object_str(obj, "typeId")
         summary: str = utils.get_object_str(obj, "summary")
-        assignee: str = utils.get_object_str(obj, "assignee")
+        assignee: str = utils.get_object_str(obj, "assigneeName")
+        issue_status: str = utils.get_object_str(obj, "statusId")
+        issue_priority: str = utils.get_object_str(obj, "priorityId")
+        resolution: str = utils.get_object(obj, "done")
         original_estimate: int = utils.get_object_int(
             obj, "currentEstimateStatistic.statFieldValue.value"
         )
@@ -69,6 +81,9 @@ class JiraIssueSprintReport:
             issue_type,
             summary,
             assignee,
+            issue_status,
+            issue_priority,
+            resolution,
             original_estimate,
             final_estimate,
         )
@@ -88,6 +103,9 @@ class JiraIssueSprintReport:
         result["issue_type"] = self.issue_type
         result["summary"] = self.summary
         result["assignee"] = self.assignee
+        result["issue_status"] = self.issue_status
+        result["issue_priority"] = self.issue_priority
+        result["resolution"] = self.resolution
         result["original_estimate"] = int(self.original_estimate)
         if self.final_estimate is not None:
             result["final_estimate"] = int(self.final_estimate)
@@ -100,6 +118,9 @@ class JiraIssueSprintReport:
         issue_type: {self.issue_type}
         summary: {self.summary}
         assignee: {self.assignee}
+        issue_status: {self.issue_status}
+        issue_priority: {self.issue_priority}
+        resolution: {self.resolution}
         original_estimate: {self.original_estimate}
         final_estimate: {self.final_estimate}"""
 
@@ -122,6 +143,8 @@ class SprintReport:
     goal: str
     start_date: datetime
     end_date: datetime
+    status_types: dict
+    priority_types: dict
     issue_types: dict
     completed_issues: Optional[list[JiraIssueSprintReport]] = None
     not_completed_issues: Optional[list[JiraIssueSprintReport]] = None
@@ -153,6 +176,8 @@ class SprintReport:
         end_date: datetime = utils.get_object_datetime_sprint_report(
             obj, "sprint.completeDate"
         )
+        status_types: dict = utils.get_object(obj, "contents.entityData.statuses")
+        priority_types: dict = utils.get_object(obj, "contents.entityData.priorities")
         issue_types: dict = utils.get_object(obj, "contents.entityData.types")
         completed_issues: Optional[list[JiraIssueSprintReport]] = (
             get_optional_jira_issue_sprint_report_list(obj, "contents.completedIssues")
@@ -179,6 +204,8 @@ class SprintReport:
             goal,
             start_date,
             end_date,
+            status_types,
+            priority_types,
             issue_types,
             completed_issues,
             not_completed_issues,
@@ -307,17 +334,22 @@ def get_jira_issues_with_estimation_change(
     return result
 
 
-def clean_issue_types(obj: dict) -> dict:
-    return {item: data.get("typeName") for item, data in obj.items()}
+def clean_issue_types(obj: dict, name: str) -> dict:
+    return {item: data.get(name) for item, data in obj.items()}
 
 
 def set_issue_type(
-    jira_issue: JiraIssueSprintReport, types: dict
+    jira_issue: JiraIssueSprintReport, types: dict, name: str
 ) -> JiraIssueSprintReport:
-    types = clean_issue_types(types)
+    access_name: str = name.split("_")[1]
+    print(f"access_name with initial split: {access_name}")
+    access_name = f"{access_name}Name"
+    print(f"access_name after concatenation: {access_name}")
+    types = clean_issue_types(types, access_name)
+    print(types)
     for type_key, type_value in types.items():
-        if jira_issue.issue_type == type_key:
-            jira_issue.issue_type = type_value
+        if jira_issue[name] == type_key:
+            jira_issue[name] = type_value
     return jira_issue
 
 
@@ -325,6 +357,4 @@ def get_active_developers(sprint: SprintReport) -> set:
     issue_list: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
         sprint
     )
-    for issue in issue_list:
-        print(issue.assignee)
     return {item.assignee for item in issue_list if item.assignee != "None"}

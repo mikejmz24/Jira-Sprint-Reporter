@@ -46,19 +46,6 @@ def create_confluence_page(ancestor: str) -> requests.Response:
             "Authorization": os.environ.get("PASSWORD"),
             "Content-Type": "application/json",
         }
-        # content_value: str = """
-        # <h1>This is a content added from a Python script</h1>
-        # This is a normal paragraph test...
-        # <br /><br />
-        #
-        # This below is a macro<br />
-        # <ac:structured-macro ac:name="info">
-        # <ac:parameter ac:name="title">Info Macro Title</ac:parameter>
-        # <ac:rich-text-body>
-        # Some text goes inside the macro...
-        # </ac:rich-text-body>
-        # </ac:structured-macro>
-        # """
         content_value: str = sprint_report_template(sprint_data)
         print(content_value)
         data: dict = {
@@ -86,6 +73,6 @@ if __name__ == "__main__":
     # data: dict = query_jira_issue_to_dict_or_json(jira_issue)
     # print(data)
     print("Type the ancestor where to create the confluence page")
-    page = input()
+    page: str = input()
     res: requests.Response = create_confluence_page(page)
     print(f"status code: {res.status_code}")

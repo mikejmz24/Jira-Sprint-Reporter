@@ -1,13 +1,68 @@
-from entities.sprint_report_api import SprintReport, get_active_developers
+from entities.sprint_report_api import (
+    JiraIssueSprintReport,
+    SprintReport,
+    get_active_developers,
+    get_all_jira_issues_from_sprint_report,
+    set_issue_type,
+)
 
 
 def sprint_report_template(sprint: SprintReport) -> str:
     res = f"""
     This document presents the goals and details of this sprint, aligned to the commitments defined in the 
     Team Agreement document, to serve as a sprint tracking tool.<br />
-    {sprint_date_table(sprint)}
-    {sprint_goal_table(sprint)}
+    {sprint_date_table(sprint)}<br />
+    {sprint_goal_info(sprint)}
+    {all_pbis(sprint)}
     """
+    res = res.replace("&", "&amp;")
+    return res
+
+
+def all_pbis(sprint: SprintReport) -> str:
+    return f"""
+    <h2>Sprint Work Items</h2>
+    <strong style="color: rgb(255,102,0)">All PBIs</strong><br />
+    {print_all_pbis(sprint)}
+    """
+
+
+def print_all_pbis(sprint: SprintReport) -> str:
+    res: str = f"""
+    <table>
+        <tbody>
+            <tr>
+                <th style="text-align: center">Issue</th>
+                <th style="text-align: center">Type</th>
+                <th style="text-align: center">Assignee</th>
+                <th style="text-align: center">Priority</th>
+                <th style="text-align: center">Status</th>
+                <th style="text-align: center">Resolution</th>
+            </tr>{print_all_pbis_tr(sprint)}
+        </tbody>
+    </table>
+    """
+    return res
+
+
+def print_all_pbis_tr(sprint: SprintReport) -> str:
+    all_issues: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
+        sprint
+    )
+    res: str = ""
+    for issue in all_issues:
+        issue = set_issue_type(issue, sprint.issue_types, "issue_type")
+        issue = set_issue_type(issue, sprint.priority_types, "issue_priority")
+        issue = set_issue_type(issue, sprint.status_types, "issue_status")
+        res += f"""
+            <tr>
+                <td style="text-align: left"><a href="https://jira.amer.thermo.com/browse/{issue.key}">{issue.key}: {issue.summary}</a></td>
+                <td style="text-align: left">{issue.issue_type}</td>
+                <td style="text-align: left">{issue.assignee}</td>
+                <td style="text-align: left">{issue.issue_priority}</td>
+                <td style="text-align: left">{issue.issue_status}</td>
+                <td style="text-align: center">{issue.resolution}</td>
+            </tr>"""
     return res
 
 
@@ -59,7 +114,7 @@ def sprint_date_table(sprint: SprintReport) -> str:
 
 def info_macro(type_name: str, msg: str, title: str = "") -> str:
     return f"""
-    <ac:structured-macro ac:name={type_name}>
+    <ac:structured-macro ac:name="{type_name}">
     <ac:parameter ac:name="title">{title}</ac:parameter>
     <ac:rich-text-body>
         {msg}

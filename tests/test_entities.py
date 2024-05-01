@@ -60,8 +60,18 @@ class TestSprintReportMethods:
             data = json.load(json_file)
             yield sprint_report_from_dict(data)
 
+    def test_return_statuses_dict(self, sprint_data: SprintReport) -> None:
+        statuses: dict = clean_issue_types(sprint_data.status_types, "statusName")
+        print(statuses)
+        assert len(statuses) == 3
+
+    def test_return_priorities_dict(self, sprint_data: SprintReport) -> None:
+        priorities: dict = clean_issue_types(sprint_data.priority_types, "priorityName")
+        print(priorities)
+        assert len(priorities) == 2
+
     def test_return_types_dict(self, sprint_data: SprintReport) -> None:
-        issues: dict = clean_issue_types(sprint_data.issue_types)
+        issues: dict = clean_issue_types(sprint_data.issue_types, "typeName")
         print(issues)
         assert len(issues) == 5
 
@@ -72,13 +82,35 @@ class TestSprintReportMethods:
         result: int = len(jira_issues) if jira_issues else 0
         assert result == 10
 
-    def test_set_jira_issue_type(self, sprint_data: SprintReport) -> None:
+    def test_set_jira_status_type(self, sprint_data: SprintReport) -> None:
         completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
             2
         ]
-        issue_types: dict = sprint_data.issue_types
-        result: JiraIssueSprintReport = set_issue_type(completed_issue, issue_types)
+        issue_type: dict = sprint_data.issue_types
+        result: JiraIssueSprintReport = set_issue_type(
+            completed_issue, issue_type, "issue_type"
+        )
         assert result.issue_type == "Bug"
+
+    def test_set_jira_issue_priority(self, sprint_data: SprintReport) -> None:
+        completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
+            2
+        ]
+        priority_types: dict = sprint_data.priority_types
+        result: JiraIssueSprintReport = set_issue_type(
+            completed_issue, priority_types, "issue_priority"
+        )
+        assert result.issue_priority == "P2 - High"
+
+    def test_set_jira_issue_status(self, sprint_data: SprintReport) -> None:
+        completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
+            2
+        ]
+        issue_status: dict = sprint_data.status_types
+        result: JiraIssueSprintReport = set_issue_type(
+            completed_issue, issue_status, "issue_status"
+        )
+        assert result.issue_status == "Resolved"
 
     def test_get_all_sprint_developers(self, sprint_data) -> None:
         result: set = get_active_developers(sprint_data)
