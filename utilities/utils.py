@@ -1,3 +1,4 @@
+import base64
 from datetime import datetime
 from typing import Any, Optional
 
@@ -70,3 +71,10 @@ def get_optional_int(object_name: Any, path: str) -> Optional[int]:
 
 def get_optional_datetime(object_name: Any, path: str) -> Optional[datetime]:
     return get_object_datetime(object_name, path)
+
+
+def encode_login_credentials(user_name: str, password: str) -> str:
+    res: str = f"{user_name}:{password}"
+    res_bytes = res.encode("ascii")
+    res_encoded: bytes = base64.b64encode(res_bytes)
+    return res_encoded.decode("utf-8")

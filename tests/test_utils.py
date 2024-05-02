@@ -1,12 +1,6 @@
 import json
 
-# from entities import sprint_report_api
 from utilities import utils
-
-# from typing import Generator, Optional
-
-
-# import pytest
 
 
 def test_get_object_path_str() -> None:
@@ -38,3 +32,15 @@ def test_get_object_list_of_string_with_one_item() -> None:
         search_path: str = "fields.components.name"
         expected_result: list[str] = ["Global Launch"]
         assert utils.get_object_list_of_str(data, search_path) == expected_result
+
+
+def test_base64_encodes_login_credentials() -> None:
+    res: str = (
+        "bWlndWVsLmppbWVuZXoyQHRoZXJtb2Zpc2hlci5jb206IVRoM3JtQEYxc2gzclNjMTNudDFmMWMyMDIyLi4="
+    )
+    assert (
+        utils.encode_login_credentials(
+            "miguel.jimenez2@thermofisher.com", "!Th3rm@F1sh3rSc13nt1f1c2022.."
+        )
+        == res
+    )

@@ -11,7 +11,14 @@ from entities.sprint_report_api import (
     sprint_report_from_dict,
     update_sprint_jira_issue_types,
 )
+from entities.team_info import (
+    ListTeamBoards,
+    TeamBoard,
+    team_board_list_from_dict,
+    team_board_to_dict,
+)
 from templates.sprint_report_template import sprint_report_template
+from utilities.utils import encode_login_credentials
 
 config = dotenv_values("../.env")
 load_dotenv()
@@ -78,7 +85,6 @@ def create_sprint_report_confluence_page() -> None:
     team_board: str = input()
     print("Type the ancestor ID where you want to create the confluence page")
     page: str = input()
-    pswd: str = getpass("Enter your password:")
     res: requests.Response = create_confluence_page(page, team_board)
     print(f"status code: {res.status_code}")
 
@@ -90,6 +96,54 @@ def query_jira_issue_prompt() -> None:
     print(data)
 
 
+def make_api_request(
+    authorization: str, base_url: str, request_type: str = "POST"
+) -> requests.Response:
+    headers: dict = {
+        "Accept": "application/json",
+        "Authorization": f"Basic {authorization}",
+        "Content-Type": "application/json",
+    }
+    return requests.request(request_type, base_url, headers=headers)
+
+
+def create_sprint_report_with_user_interaction() -> None:
+    creds: list[str] = ask_user_to_login()
+    while creds[1] != "200":
+        print("There was a problem logging you in. Please try again...")
+        creds = ask_user_to_login()
+    print("Excellent you're now logged in!")
+    print("Search for a team board that you would like to generate reports")
+    team_board: str = input()
+    board_api: str = (
+        f"https://jira.amer.thermo.com/rest/agile/latest/board?startAt=0&name={team_board}"
+    )
+    board_response: requests.Response = make_api_request(creds[0], board_api, "GET")
+    list_team_board_object: ListTeamBoards = team_board_list_from_dict(
+        board_response.json()
+    )
+    # for team in list_team_board_object.boards:
+    #     print(f"name: {team.name}")
+    print("Please type the number of the team you want to generate reports")
+    for index, team in enumerate(list_team_board_object.boards):
+        print(f"[{index + 1}] name: {team.name}")
+    user_team_select: str = input()
+    for index, team in enumerate(list_team_board_object.boards):
+        if user_team_select == index:
+            print(f"Thanks for your selection: {team.name}")
+
+
+def ask_user_to_login() -> list[str]:
+    print("Enter your Thermo Fisher username (complete email address)")
+    user_name: str = input()
+    password: str = getpass("Enter you Thermo Fisher password")
+    test_url: str = (
+        "https://jira.amer.thermo.com/rest/agile/latest/board?startAt=0&name=qppi"
+    )
+    encrypted_credentials: str = encode_login_credentials(user_name, password)
+    test_response = make_api_request(encrypted_credentials, test_url, "GET")
+    return [encrypted_credentials, str(test_response.status_code)]
+
+
 if __name__ == "__main__":
-    # TODO: Investigate how to login to Jira and how to navigate through teams boards and sprints.
-    create_sprint_report_confluence_page()
+    create_sprint_report_with_user_interaction()
