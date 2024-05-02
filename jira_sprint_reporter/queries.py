@@ -1,5 +1,6 @@
 import json
 import os
+from getpass import getpass
 
 import requests
 from dotenv import dotenv_values, load_dotenv
@@ -72,14 +73,23 @@ def create_confluence_page(ancestor: str, board: str) -> requests.Response:
         return requests.post(base_url, headers=headers, json=data)
 
 
-if __name__ == "__main__":
-    # print("enter a jira issue to show the results on screen :) ")
-    # jira_issue = input()
-    # data: dict = query_jira_issue_to_dict_or_json(jira_issue)
-    # print(data)
+def create_sprint_report_confluence_page() -> None:
     print("Enter your team's Jira Board ID")
-    board: str = input()
+    team_board: str = input()
     print("Type the ancestor ID where you want to create the confluence page")
     page: str = input()
-    res: requests.Response = create_confluence_page(page, board)
+    pswd: str = getpass("Enter your password:")
+    res: requests.Response = create_confluence_page(page, team_board)
     print(f"status code: {res.status_code}")
+
+
+def query_jira_issue_prompt() -> None:
+    print("enter a jira issue to show the results on screen :) ")
+    jira_issue = input()
+    data: dict = query_jira_issue_to_dict_or_json(jira_issue)
+    print(data)
+
+
+if __name__ == "__main__":
+    # TODO: Investigate how to login to Jira and how to navigate through teams boards and sprints.
+    create_sprint_report_confluence_page()
