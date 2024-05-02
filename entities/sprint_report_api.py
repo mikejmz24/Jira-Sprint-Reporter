@@ -69,7 +69,7 @@ class JiraIssueSprintReport:
         issue_status: str = utils.get_object_str(obj, "statusId")
         issue_priority: str = utils.get_object_str(obj, "priorityId")
         resolution: str = utils.get_object(obj, "done")
-        original_estimate: int = utils.get_object_int(
+        original_estimate: int = utils.get_object(
             obj, "currentEstimateStatistic.statFieldValue.value"
         )
         final_estimate: Optional[int] = utils.get_optional_int(
@@ -146,6 +146,8 @@ class SprintReport:
     status_types: dict
     priority_types: dict
     issue_types: dict
+    commited_story_points: int
+    delivered_story_points: int
     completed_issues: Optional[list[JiraIssueSprintReport]] = None
     not_completed_issues: Optional[list[JiraIssueSprintReport]] = None
     removed_issues: Optional[list[JiraIssueSprintReport]] = None
@@ -179,6 +181,12 @@ class SprintReport:
         status_types: dict = utils.get_object(obj, "contents.entityData.statuses")
         priority_types: dict = utils.get_object(obj, "contents.entityData.priorities")
         issue_types: dict = utils.get_object(obj, "contents.entityData.types")
+        commited_story_points: int = utils.get_object_int(
+            obj, "contents.completedIssuesInitialEstimateSum.value"
+        )
+        delivered_story_points: int = utils.get_object_int(
+            obj, "contents.completedIssuesEstimateSum.value"
+        )
         completed_issues: Optional[list[JiraIssueSprintReport]] = (
             get_optional_jira_issue_sprint_report_list(obj, "contents.completedIssues")
         )
@@ -207,6 +215,8 @@ class SprintReport:
             status_types,
             priority_types,
             issue_types,
+            commited_story_points,
+            delivered_story_points,
             completed_issues,
             not_completed_issues,
             removed_issues,
@@ -229,6 +239,8 @@ class SprintReport:
         result["start_date"] = str(self.start_date)
         result["end_date"] = str(self.end_date)
         # result["issue_types"] = self.issue_types
+        result["commited_story_points"] = self.commited_story_points
+        result["delivered_story_points"] = self.delivered_story_points
         result["completed_issues"] = self.completed_issues
         result["not_completed_issues"] = self.not_completed_issues
         result["removed_issues"] = self.removed_issues
@@ -335,7 +347,10 @@ def get_jira_issues_with_estimation_change(
 
 
 def clean_issue_types(obj: dict, name: str) -> dict:
-    return {item: data.get(name) for item, data in obj.items()}
+    res: dict = {}
+    if obj is not None:
+        res = {item: data.get(name) for item, data in obj.items()}
+    return res
 
 
 def set_issue_type(
@@ -353,8 +368,102 @@ def set_issue_type(
     return jira_issue
 
 
+def update_sprint_jira_issue_types(sprint: SprintReport) -> SprintReport:
+    sprint.status_types = clean_issue_types(sprint.status_types, "statusName")
+    sprint.priority_types = clean_issue_types(sprint.priority_types, "priorityName")
+    sprint.issue_types = clean_issue_types(sprint.issue_types, "typeName")
+    sprint.completed_issues = update_sprint_issue_keys_with_values(
+        sprint.completed_issues, sprint
+    )
+    sprint.not_completed_issues = update_sprint_issue_keys_with_values(
+        sprint.not_completed_issues, sprint
+    )
+    sprint.removed_issues = update_sprint_issue_keys_with_values(
+        sprint.removed_issues, sprint
+    )
+    sprint.issues_completed_outside = update_sprint_issue_keys_with_values(
+        sprint.issues_completed_outside, sprint
+    )
+    return sprint
+
+
+def update_issue_key_with_value(
+    issue: JiraIssueSprintReport, original: dict, name: str
+) -> str:
+    for clean_key, clean_value in original.items():
+        if issue[name] == clean_key:
+            issue[name] = clean_value
+    return issue[name]
+
+
+def update_sprint_issue_keys_with_values(
+    issue_list: Optional[list[JiraIssueSprintReport]], original: SprintReport
+) -> Optional[list[JiraIssueSprintReport]]:
+    if issue_list is not None:
+        for issue in issue_list:
+            issue.issue_status = update_issue_key_with_value(
+                issue, original.status_types, "issue_status"
+            )
+            issue.issue_priority = update_issue_key_with_value(
+                issue, original.priority_types, "issue_priority"
+            )
+            issue.issue_type = update_issue_key_with_value(
+                issue, original.issue_types, "issue_type"
+            )
+    return issue_list
+
+
 def get_active_developers(sprint: SprintReport) -> set:
     issue_list: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
         sprint
     )
     return {item.assignee for item in issue_list if item.assignee != "None"}
+
+
+def get_added_issues(
+    added_dict: Optional[dict], issues: list[JiraIssueSprintReport]
+) -> Optional[list[JiraIssueSprintReport]]:
+    # res: list[JiraIssueSprintReport] = []
+    # if added_dict is not None:
+    #     res = [issue for issue in issues if issue["key"] in added_dict]
+    # return res
+    #
+    if added_dict is None:
+        return None
+    return list(filter(lambda issue: issue["key"] in added_dict, issues))
+
+
+def get_total_commited_pbis(sprint: SprintReport) -> int:
+    if sprint.completed_issues is None:
+        return 0
+
+    if sprint.added_issues is not None:
+        added_keys: set = set(sprint.added_issues.keys())
+        commited_issues: list[JiraIssueSprintReport] = [
+            issue for issue in sprint.completed_issues if issue["key"] not in added_keys
+        ]
+        return len(commited_issues)
+
+    return len(sprint.completed_issues)
+
+
+def get_original_commited_issues(sprint: SprintReport) -> list[JiraIssueSprintReport]:
+    if sprint.completed_issues is None and sprint.removed_issues is None:
+        return []
+
+    added_keys: set = set()
+
+    if sprint.added_issues is not None:
+        added_keys = set(sprint.added_issues.keys())
+
+    commited_issues: list[JiraIssueSprintReport] = []
+
+    if sprint.completed_issues is not None:
+        commited_issues += [
+            issue for issue in sprint.completed_issues if issue["key"] not in added_keys
+        ]
+
+    if sprint.removed_issues is not None:
+        commited_issues += list(sprint.removed_issues)
+
+    return commited_issues

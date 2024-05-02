@@ -5,7 +5,11 @@ import requests
 from dotenv import dotenv_values, load_dotenv
 
 import entities.jira_issue
-from entities.sprint_report_api import SprintReport, sprint_report_from_dict
+from entities.sprint_report_api import (
+    SprintReport,
+    sprint_report_from_dict,
+    update_sprint_jira_issue_types,
+)
 from templates.sprint_report_template import sprint_report_template
 
 config = dotenv_values("../.env")
@@ -36,17 +40,18 @@ def query_jira_issue_to_dict_or_json(key: str) -> dict:
     return result
 
 
-def create_confluence_page(ancestor: str) -> requests.Response:
+def create_confluence_page(ancestor: str, board: str) -> requests.Response:
     with open("../tests/json_files/sprint-36928.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
-        sprint_data = sprint_report_from_dict(data)
+        sprint_data: SprintReport = sprint_report_from_dict(data)
+        sprint_data = update_sprint_jira_issue_types(sprint_data)
         base_url: str = "https://confluence.amer.thermo.com/rest/api/content"
         headers: dict = {
             "Accept": "application/json",
             "Authorization": os.environ.get("PASSWORD"),
             "Content-Type": "application/json",
         }
-        content_value: str = sprint_report_template(sprint_data)
+        content_value: str = sprint_report_template(sprint_data, board)
         print(content_value)
         data: dict = {
             "title": "Test from Python Requests",
@@ -72,7 +77,9 @@ if __name__ == "__main__":
     # jira_issue = input()
     # data: dict = query_jira_issue_to_dict_or_json(jira_issue)
     # print(data)
-    print("Type the ancestor where to create the confluence page")
+    print("Enter your team's Jira Board ID")
+    board: str = input()
+    print("Type the ancestor ID where you want to create the confluence page")
     page: str = input()
-    res: requests.Response = create_confluence_page(page)
+    res: requests.Response = create_confluence_page(page, board)
     print(f"status code: {res.status_code}")

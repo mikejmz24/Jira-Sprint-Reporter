@@ -13,6 +13,7 @@ from entities.sprint_report_api import (
     get_jira_issues_with_estimation_change,
     set_issue_type,
     sprint_report_from_dict,
+    update_issue_key_with_value,
 )
 from jira_sprint_reporter.sprint_report_queries import get_sprint_report_data
 
@@ -83,38 +84,46 @@ class TestSprintReportMethods:
         assert result == 10
 
     def test_set_jira_status_type(self, sprint_data: SprintReport) -> None:
-        completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
-            2
-        ]
-        issue_type: dict = sprint_data.issue_types
-        result: JiraIssueSprintReport = set_issue_type(
-            completed_issue, issue_type, "issue_type"
-        )
-        assert result.issue_type == "Bug"
+        if sprint_data.completed_issues is not None:
+            completed_issue: Optional[JiraIssueSprintReport] = (
+                sprint_data.completed_issues[2]
+            )
+            result: JiraIssueSprintReport = set_issue_type(
+                completed_issue, sprint_data.issue_types, "issue_type"
+            )
+            assert result.issue_type == "Bug"
 
     def test_set_jira_issue_priority(self, sprint_data: SprintReport) -> None:
-        completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
-            2
-        ]
-        priority_types: dict = sprint_data.priority_types
-        result: JiraIssueSprintReport = set_issue_type(
-            completed_issue, priority_types, "issue_priority"
-        )
-        assert result.issue_priority == "P2 - High"
+        if sprint_data.completed_issues is not None:
+            completed_issue: Optional[JiraIssueSprintReport] = (
+                sprint_data.completed_issues[2]
+            )
+            result: JiraIssueSprintReport = set_issue_type(
+                completed_issue, sprint_data.priority_types, "issue_priority"
+            )
+            assert result.issue_priority == "P2 - High"
 
     def test_set_jira_issue_status(self, sprint_data: SprintReport) -> None:
-        completed_issue: Optional[JiraIssueSprintReport] = sprint_data.completed_issues[
-            2
-        ]
-        issue_status: dict = sprint_data.status_types
-        result: JiraIssueSprintReport = set_issue_type(
-            completed_issue, issue_status, "issue_status"
-        )
-        assert result.issue_status == "Resolved"
+        if sprint_data.completed_issues is not None:
+            completed_issue: Optional[JiraIssueSprintReport] = (
+                sprint_data.completed_issues[2]
+            )
+            result: JiraIssueSprintReport = set_issue_type(
+                completed_issue, sprint_data.status_types, "issue_status"
+            )
+            assert result.issue_status == "Resolved"
 
     def test_get_all_sprint_developers(self, sprint_data) -> None:
         result: set = get_active_developers(sprint_data)
         assert len(result) == 4
+
+    def test_update_issue_value(self, sprint_data) -> None:
+        sprint_data.issue_types = clean_issue_types(sprint_data.issue_types, "typeName")
+        issue: JiraIssueSprintReport = sprint_data.completed_issues[0]
+        result: str = update_issue_key_with_value(
+            issue, sprint_data.issue_types, "issue_type"
+        )
+        assert result == "Story"
 
 
 class TestQuerySprintReport:
