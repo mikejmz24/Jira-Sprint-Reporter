@@ -11,7 +11,7 @@ from entities.sprint_report_api import (
     sprint_report_from_dict,
     update_sprint_jira_issue_types,
 )
-from entities.team_info import ListTeamBoards, team_board_list_from_dict
+from entities.team_info import ListTeamBoards, TeamBoard, team_board_list_from_dict
 from templates.sprint_report_template import sprint_report_template
 from utilities.utils import encode_login_credentials
 
@@ -111,7 +111,7 @@ def create_sprint_report_with_user_interaction() -> None:
     print("Search for a team board that you would like to generate reports")
     team_board: str = input()
     board_api: str = (
-        f"https://jira.amer.thermo.com/rest/agile/latest/board?startAt=0&name={team_board}"
+        f"https://jira.amer.thermo.com/rest/agile/latest/board?&startAt=0&name={team_board}"
     )
     # board_response: requests.Response = make_api_request(creds[0], board_api, "GET")
     board_response: requests.Response = make_api_request(
@@ -119,17 +119,32 @@ def create_sprint_report_with_user_interaction() -> None:
         board_api,
         "GET",
     )
-    print(board_response.status_code)
     list_team_board_object: ListTeamBoards = team_board_list_from_dict(
         board_response.json()
     )
-    print("Please type the number of the team you want to generate reports")
-    for index, team in enumerate(list_team_board_object.boards):
-        print(f"[{index + 1}] name: {team.name}")
-    user_team_select: str = input()
-    for index, team in enumerate(list_team_board_object.boards):
-        if user_team_select == str(index + 1):
-            print(f"Thanks for your selection: {team.name}")
+    team_selection: TeamBoard = user_board_select(list_team_board_object)
+    print("Excellent, we can continue!")
+    print(team_selection)
+    # for index, team in enumerate(list_team_board_object.boards):
+    #     if user_team_select == str(index + 1):
+    #         print(f"Thanks for your selection: {team.name}")
+
+
+def user_board_select(list_team_board_object: ListTeamBoards) -> TeamBoard:
+    while True:
+        print("Please select a team:")
+        for index, team in enumerate(list_team_board_object.boards):
+            print(f"[{index + 1}] {team.name}")
+        user_team_select: str = input("Enter the number of the team: ")
+        if user_team_select in map(
+            str, range(1, len(list_team_board_object.boards) + 1)
+        ):
+            selected_team: TeamBoard = list_team_board_object.boards[
+                int(user_team_select) - 1
+            ]
+            print(f"Thanks for your selection: {selected_team.name}")
+            return selected_team
+        print("Sorry, invalid input. Please select a valid team number.")
 
 
 def ask_user_to_login() -> list[str]:
@@ -137,7 +152,7 @@ def ask_user_to_login() -> list[str]:
     user_name: str = input()
     password: str = getpass("Enter you Thermo Fisher password")
     test_url: str = (
-        "https://jira.amer.thermo.com/rest/agile/latest/board?startAt=0&name=qppi"
+        "https://jira.amer.thermo.com/rest/agile/latest/board?maxResults=1&startAt=0&name=qppi"
     )
     encrypted_credentials: str = encode_login_credentials(user_name, password)
     test_response = make_api_request(encrypted_credentials, test_url, "GET")
