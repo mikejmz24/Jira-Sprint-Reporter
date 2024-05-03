@@ -11,12 +11,7 @@ from entities.sprint_report_api import (
     sprint_report_from_dict,
     update_sprint_jira_issue_types,
 )
-from entities.team_info import (
-    ListTeamBoards,
-    TeamBoard,
-    team_board_list_from_dict,
-    team_board_to_dict,
-)
+from entities.team_info import ListTeamBoards, team_board_list_from_dict
 from templates.sprint_report_template import sprint_report_template
 from utilities.utils import encode_login_credentials
 
@@ -108,28 +103,32 @@ def make_api_request(
 
 
 def create_sprint_report_with_user_interaction() -> None:
-    creds: list[str] = ask_user_to_login()
-    while creds[1] != "200":
-        print("There was a problem logging you in. Please try again...")
-        creds = ask_user_to_login()
-    print("Excellent you're now logged in!")
+    # creds: list[str] = ask_user_to_login()
+    # while creds[1] != "200":
+    #     print("There was a problem logging you in. Please try again...")
+    #     creds = ask_user_to_login()
+    # print("Excellent you're now logged in!")
     print("Search for a team board that you would like to generate reports")
     team_board: str = input()
     board_api: str = (
         f"https://jira.amer.thermo.com/rest/agile/latest/board?startAt=0&name={team_board}"
     )
-    board_response: requests.Response = make_api_request(creds[0], board_api, "GET")
+    # board_response: requests.Response = make_api_request(creds[0], board_api, "GET")
+    board_response: requests.Response = make_api_request(
+        "bWlndWVsLmppbWVuZXoyQHRoZXJtb2Zpc2hlci5jb206IVRoM3JtQEYxc2gzclNjMTNudDFmMWMyMDIyLi4=",
+        board_api,
+        "GET",
+    )
+    print(board_response.status_code)
     list_team_board_object: ListTeamBoards = team_board_list_from_dict(
         board_response.json()
     )
-    # for team in list_team_board_object.boards:
-    #     print(f"name: {team.name}")
     print("Please type the number of the team you want to generate reports")
     for index, team in enumerate(list_team_board_object.boards):
         print(f"[{index + 1}] name: {team.name}")
     user_team_select: str = input()
     for index, team in enumerate(list_team_board_object.boards):
-        if user_team_select == index:
+        if user_team_select == str(index + 1):
             print(f"Thanks for your selection: {team.name}")
 
 
@@ -147,3 +146,4 @@ def ask_user_to_login() -> list[str]:
 
 if __name__ == "__main__":
     create_sprint_report_with_user_interaction()
+    # create_sprint_report_confluence_page()
