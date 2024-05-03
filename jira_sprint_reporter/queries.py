@@ -103,6 +103,9 @@ def make_api_request(
 
 
 def create_sprint_report_with_user_interaction() -> None:
+    psswrd: str = (
+        "bWlndWVsLmppbWVuZXoyQHRoZXJtb2Zpc2hlci5jb206IVRoM3JtQEYxc2gzclNjMTNudDFmMWMyMDIyLi4="
+    )
     # creds: list[str] = ask_user_to_login()
     # while creds[1] != "200":
     #     print("There was a problem logging you in. Please try again...")
@@ -114,17 +117,23 @@ def create_sprint_report_with_user_interaction() -> None:
         f"https://jira.amer.thermo.com/rest/agile/latest/board?&startAt=0&name={team_board}"
     )
     # board_response: requests.Response = make_api_request(creds[0], board_api, "GET")
-    board_response: requests.Response = make_api_request(
-        "bWlndWVsLmppbWVuZXoyQHRoZXJtb2Zpc2hlci5jb206IVRoM3JtQEYxc2gzclNjMTNudDFmMWMyMDIyLi4=",
-        board_api,
-        "GET",
-    )
-    list_team_board_object: ListTeamBoards = team_board_list_from_dict(
-        board_response.json()
-    )
-    team_selection: TeamBoard = user_board_select(list_team_board_object)
-    print("Excellent, we can continue!")
-    print(team_selection)
+    board_response: requests.Response = make_api_request(psswrd, board_api, "GET")
+    if board_response.status_code == 200:
+        list_team_board_object: ListTeamBoards = team_board_list_from_dict(
+            board_response.json()
+        )
+        team_selection: TeamBoard = user_board_select(list_team_board_object)
+        print(
+            f"Excellent, we can continue! Your team board number is: {team_selection.team_board_id}"
+        )
+        sprint_api: str = (
+            f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_selection.team_board_id}/sprint?maxResults=9&startAt=0"
+        )
+        sprint_response: requests.Response = make_api_request(psswrd, sprint_api, "GET")
+    else:
+        print(
+            f"There was an error with the board. HTTP code: {board_response.status_code}"
+        )
     # for index, team in enumerate(list_team_board_object.boards):
     #     if user_team_select == str(index + 1):
     #         print(f"Thanks for your selection: {team.name}")

@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from typing import Any
+from datetime import datetime
+from typing import Any, Optional
 
-from utilities.utils import get_object
+from utilities.utils import get_object, get_object_datetime, get_optional_object
 
 
 @dataclass
@@ -44,6 +45,53 @@ class ListTeamBoards:
         return result
 
 
+@dataclass
+class TeamSprint:
+    sprint_id: int
+    name: str
+    start_date: datetime
+    end_date: datetime
+    origin_board_id: int
+    goal: Optional[str]
+
+    @staticmethod
+    def from_dict(obj: Any) -> "TeamSprint":
+        sprint_id: int = int(get_object(obj, "id"))
+        name: str = get_object(obj, "name")
+        start_date: datetime = get_object_datetime(obj, "startDate")
+        end_date: datetime = get_object_datetime(obj, "endDate")
+        origin_board_id: int = int(get_object(obj, "originBoardId"))
+        goal: Optional[str] = get_optional_object(obj, "goal")
+        return TeamSprint(sprint_id, name, start_date, end_date, origin_board_id, goal)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        result["sprint_id"] = int(self.sprint_id)
+        result["name"] = self.name
+        result["start_date"] = self.start_date
+        result["end_date"] = self.end_date
+        result["origin_board_id"] = self.origin_board_id
+        result["goal"] = self.goal
+        return result
+
+
+@dataclass
+class ListTeamSprints:
+    sprints: list[TeamSprint]
+
+    @staticmethod
+    def from_dict(obj: Any) -> "ListTeamSprints":
+        sprints: list[TeamSprint] = [
+            team_sprint_from_dict(item) for item in get_object(obj, "values")
+        ]
+        return ListTeamSprints(sprints)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        result["sprints"] = self.sprints
+        return result
+
+
 def team_board_from_dict(s: Any) -> TeamBoard:
     return TeamBoard.from_dict(s)
 
@@ -57,4 +105,20 @@ def team_board_list_from_dict(s: Any) -> ListTeamBoards:
 
 
 def team_board_list_to_dict(x: ListTeamBoards) -> dict:
+    return x.to_dict()
+
+
+def team_sprint_from_dict(s: Any) -> TeamSprint:
+    return TeamSprint.from_dict(s)
+
+
+def team_sprint_to_dict(x: TeamSprint) -> dict:
+    return x.to_dict()
+
+
+def team_sprint_list_from_dict(s: Any) -> ListTeamSprints:
+    return ListTeamSprints.from_dict(s)
+
+
+def team_sprint_list_to_dict(x: ListTeamSprints):
     return x.to_dict()
