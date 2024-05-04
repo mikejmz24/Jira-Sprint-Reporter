@@ -31,6 +31,15 @@ def sprint_report_template(sprint: SprintReport, board: str) -> str:
     return res
 
 
+def generate_explanation_message(
+    title: str, issues: Optional[list[JiraIssueSprintReport]]
+) -> str:
+    explanation_message: str = ""
+    if issues:
+        explanation_message = f"<h5>{title}</h5>"
+    return explanation_message
+
+
 def all_pbis(sprint: SprintReport) -> str:
     all_issues: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
         sprint
@@ -39,17 +48,13 @@ def all_pbis(sprint: SprintReport) -> str:
     <h2>Sprint Work Items</h2>
     <strong style="color: rgb(255,102,0)">All PBIs</strong><br />
     """
-    if len(all_issues) == 0:
-        res += print_pbis(all_issues)
-    else:
-        res += "No issues found for the Sprint"
-    return res
+    return f"{res}{print_pbis(all_issues)}"
 
 
 def removed_pbis(sprint: SprintReport) -> str:
-    explanation_message: str = ""
-    if sprint.removed_issues is not None:
-        explanation_message = f"<h5>Reasons for being removed from {sprint.name}</h5>"
+    explanation_message: str = generate_explanation_message(
+        f"Reasons for being removed from {sprint.name}", sprint.removed_issues
+    )
     return f"""
     <strong style="color: rgb(255,102,0)">Issues Removed From Sprint</strong><br />
     {print_pbis(sprint.removed_issues)}
@@ -61,10 +66,9 @@ def added_pbis(sprint: SprintReport) -> str:
     added_issue_list: Optional[list[JiraIssueSprintReport]] = get_added_issues(
         sprint.added_issues, get_all_jira_issues_from_sprint_report(sprint)
     )
-    explanation_message: str = ""
-    if sprint.added_issues is not None:
-        if len(sprint.added_issues) > 0:
-            explanation_message = f"<h5>Reasons for being added to {sprint.name}</h5>"
+    explanation_message: str = generate_explanation_message(
+        f"Reasons for being added to {sprint.name}", added_issue_list
+    )
     return f"""
     <strong style="color: rgb(255,102,0)">Issues Added to Sprint</strong><br />
     {print_pbis(added_issue_list)}
@@ -73,11 +77,10 @@ def added_pbis(sprint: SprintReport) -> str:
 
 
 def spillover_incomplete_pbis(sprint: SprintReport) -> str:
-    explanation_message: str = ""
-    if sprint.not_completed_issues is not None:
-        explanation_message = (
-            f"<h5> Reasons for not being completed during Sprint {sprint.name}</h5>"
-        )
+    explanation_message: str = generate_explanation_message(
+        f"Reasons for not being completed during Sprint {sprint.name}",
+        sprint.not_completed_issues,
+    )
     return f"""
     <strong style="color: rgb(255,102,0)">Spillover / Incomplete PBIs</strong><br />
     {print_pbis(sprint.not_completed_issues)}
@@ -87,14 +90,14 @@ def spillover_incomplete_pbis(sprint: SprintReport) -> str:
 
 def bugs_details(sprint: SprintReport) -> str:
     all_items = get_all_jira_issues_from_sprint_report(sprint)
-    bug_list: list[JiraIssueSprintReport] = []
+    bug_list: list[JiraIssueSprintReport] = [
+        issue for issue in all_items if issue.issue_type == "Bug"
+    ]
     res: str = """<strong style="color: rgb(255,102,0)">Bug Details</strong><br />"""
-    for issue in all_items:
-        if issue.issue_type == "Bug":
-            bug_list.append(issue)
-    if len(bug_list) > 0:
-        return f"""{res}{print_pbis(bug_list)}"""
-    return f"No Bugs encountered during {sprint.name}"
+    explanation_message: str = generate_explanation_message(
+        f"No Bugs encountered during {sprint.name}", bug_list
+    )
+    return f"{res}{print_pbis(bug_list)}{explanation_message}"
 
 
 def upcoming_releases(sprint: SprintReport) -> str:
@@ -102,7 +105,7 @@ def upcoming_releases(sprint: SprintReport) -> str:
         sprint
     )
     project_key: str = "FDA1"
-    if len(all_issues) > 0:
+    if all_issues:
         project_key: str = all_issues[0].key.split("-")[0]
     return f"""
     <h2>Upcoming Releases</h2>
@@ -134,7 +137,7 @@ def happiness_score() -> str:
 
 
 def actions_suggestions() -> str:
-    return f"""
+    return """
     <h2>Ideas and Suggestions</h2>
     <table>
         <tbody>
@@ -181,7 +184,7 @@ def calculate_completion(sprint: SprintReport) -> str:
     committed = sprint.commited_story_points or 0
 
     if delivered or committed:
-        return f"{delivered / committed * 100:.2f}"
+        return f"{delivered / committed * 100:.0f}"
     return "N/A"
 
 
@@ -193,7 +196,7 @@ def qppi_link(board: str) -> str:
 
 def print_pbis(table_rows: Optional[list[JiraIssueSprintReport]]) -> str:
     res: str = "No issues during the Sprint.<br />"
-    if table_rows is not None:
+    if table_rows:
         res: str = f"""
         <table>
             <tbody>
