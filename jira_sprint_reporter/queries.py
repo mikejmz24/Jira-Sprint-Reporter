@@ -11,7 +11,14 @@ from entities.sprint_report_api import (
     sprint_report_from_dict,
     update_sprint_jira_issue_types,
 )
-from entities.team_info import ListTeamBoards, TeamBoard, team_board_list_from_dict
+from entities.team_info import (
+    ListTeamBoards,
+    ListTeamSprints,
+    TeamBoard,
+    TeamSprint,
+    team_board_list_from_dict,
+    team_sprint_list_from_dict,
+)
 from templates.sprint_report_template import sprint_report_template
 from utilities.utils import encode_login_credentials
 
@@ -55,9 +62,8 @@ def create_confluence_page(ancestor: str, board: str) -> requests.Response:
             "Content-Type": "application/json",
         }
         content_value: str = sprint_report_template(sprint_data, board)
-        print(content_value)
         data: dict = {
-            "title": "Test from Python Requests",
+            "title": f"{sprint_data.name} Sprint Report – Generated via Python Script",
             "type": "page",
             "space": {"key": "FIREGENE"},
             "status": "current",
@@ -73,6 +79,41 @@ def create_confluence_page(ancestor: str, board: str) -> requests.Response:
 
         # return requests.request("POST", base_url, headers=headers, json=data)
         return requests.post(base_url, headers=headers, json=data)
+
+
+def create_confluence_page_with_params(
+    creds: str, board: str, sprint: str, space: str, ancestor: str
+) -> requests.Response:
+    base_url: str = (
+        f"https://jira.amer.thermo.com/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId={board}&sprintId={sprint}"
+    )
+    sprint_data_response: requests.Response = make_api_request(creds, base_url, "GET")
+    sprint_data: SprintReport = sprint_report_from_dict(sprint_data_response.json())
+    sprint_data = update_sprint_jira_issue_types(sprint_data)
+    base_url: str = "https://confluence.amer.thermo.com/rest/api/content"
+    headers: dict = {
+        "Accept": "application/json",
+        "Authorization": f"Basic {creds}",
+        "Content-Type": "application/json",
+    }
+    content_value: str = sprint_report_template(sprint_data, board)
+    data: dict = {
+        "title": f"{sprint_data.name} Sprint Report – Generated via Python Script",
+        "type": "page",
+        "space": {"key": space},
+        "status": "current",
+        "ancestors": [{"id": ancestor}],
+        "body": {
+            "storage": {
+                "value": content_value,
+                "representation": "storage",
+            }
+        },
+        "metadata": {"properties": {"editor": {"value": "v2"}}},
+    }
+
+    # return requests.request("POST", base_url, headers=headers, json=data)
+    return requests.post(base_url, headers=headers, json=data)
 
 
 def create_sprint_report_confluence_page() -> None:
@@ -130,6 +171,37 @@ def create_sprint_report_with_user_interaction() -> None:
             f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_selection.team_board_id}/sprint?maxResults=9&startAt=0"
         )
         sprint_response: requests.Response = make_api_request(psswrd, sprint_api, "GET")
+        if sprint_response.status_code == 200:
+            list_team_sprints_object: ListTeamSprints = team_sprint_list_from_dict(
+                sprint_response.json()
+            )
+            sprint_selection: TeamSprint = user_sprint_select(list_team_sprints_object)
+            print(
+                f"Excellent, we can continue! your sprint number is: {sprint_selection.sprint_id}"
+            )
+            print(
+                "Now finally enter the Confluence Space and Ancestor IDs where you would like to create the Sprint report"
+            )
+            print("First enter the Confluence Space Key")
+            space: str = input()
+            print("Now let's finish with the Confluence Ancestor ID")
+            ancestor: str = input()
+            confluence_page_response: requests.Response = (
+                create_confluence_page_with_params(
+                    psswrd,
+                    str(team_selection.team_board_id),
+                    str(sprint_selection.sprint_id),
+                    space,
+                    ancestor,
+                )
+            )
+            print(
+                f"Confluence page HTTP response code: {confluence_page_response.status_code}"
+            )
+        else:
+            print(
+                f"There was an error with the sprints. HTTP code: {sprint_response.status_code}"
+            )
     else:
         print(
             f"There was an error with the board. HTTP code: {board_response.status_code}"
@@ -153,6 +225,23 @@ def user_board_select(list_team_board_object: ListTeamBoards) -> TeamBoard:
             ]
             print(f"Thanks for your selection: {selected_team.name}")
             return selected_team
+        print("Sorry, invalid input. Please select a valid team number.")
+
+
+def user_sprint_select(list_team_sprints_object: ListTeamSprints) -> TeamSprint:
+    while True:
+        print("Please select a Sprint:")
+        for index, sprint in enumerate(list_team_sprints_object.sprints):
+            print(f"[{index + 1}] {sprint.name}")
+        user_sprint_selection: str = input("Enter the number of the Sprint: ")
+        if user_sprint_selection in map(
+            str, range(1, len(list_team_sprints_object.sprints) + 1)
+        ):
+            selected_sprint: TeamSprint = list_team_sprints_object.sprints[
+                int(user_sprint_selection) - 1
+            ]
+            print(f"Thanks for your selection: {selected_sprint.name}")
+            return selected_sprint
         print("Sorry, invalid input. Please select a valid team number.")
 
 

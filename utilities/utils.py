@@ -42,9 +42,12 @@ def get_object_simple_list(object_name: Any, path: str) -> list[str]:
 
 
 def get_object_datetime(
-    object_name: Any, path: str, date_format: str = "%Y-%m-%dT%H:%M:%S"
+    object_name: Any,
+    path: str,
+    date_format: str = "%Y-%m-%dT%H:%M:%S",
+    str_len: int = -9,
 ) -> datetime:
-    return datetime.strptime(get_object_str(object_name, path)[:-9], date_format)
+    return datetime.strptime(get_object_str(object_name, path)[:str_len], date_format)
 
 
 def get_object_datetime_sprint_report(
@@ -57,11 +60,13 @@ def get_object_datetime_sprint_report(
 
 
 def get_optional_object(object_name: Any, path: str) -> Optional[Any]:
-    return get_object(object_name, path)
+    object_exists: Any = get_object(object_name, path)
+    return object_exists if object_exists else None
 
 
 def get_optional_str(object_name: Any, path: str) -> Optional[str]:
-    return str(get_object(object_name, path))
+    object_exists: Any = get_object(object_name, path)
+    return str(object_exists) if object_exists else None
 
 
 def get_optional_int(object_name: Any, path: str) -> Optional[int]:
@@ -69,8 +74,15 @@ def get_optional_int(object_name: Any, path: str) -> Optional[int]:
     return int(result) if result else None
 
 
-def get_optional_datetime(object_name: Any, path: str) -> Optional[datetime]:
-    return get_object_datetime(object_name, path)
+def get_optional_datetime(
+    object_name: Any, path: str, str_len: int = -9
+) -> Optional[datetime]:
+    object_exists: Any = get_object(object_name, path)
+    return (
+        get_object_datetime(object_name, path, str_len=str_len)
+        if object_exists
+        else None
+    )
 
 
 def encode_login_credentials(user_name: str, password: str) -> str:

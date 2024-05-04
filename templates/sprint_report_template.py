@@ -35,11 +35,15 @@ def all_pbis(sprint: SprintReport) -> str:
     all_issues: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
         sprint
     )
-    return f"""
+    res: str = """
     <h2>Sprint Work Items</h2>
     <strong style="color: rgb(255,102,0)">All PBIs</strong><br />
-    {print_pbis(all_issues)}
     """
+    if len(all_issues) == 0:
+        res += print_pbis(all_issues)
+    else:
+        res += "No issues found for the Sprint"
+    return res
 
 
 def removed_pbis(sprint: SprintReport) -> str:
@@ -59,7 +63,8 @@ def added_pbis(sprint: SprintReport) -> str:
     )
     explanation_message: str = ""
     if sprint.added_issues is not None:
-        explanation_message = f"<h5>Reasons for being added to {sprint.name}</h5>"
+        if len(sprint.added_issues) > 0:
+            explanation_message = f"<h5>Reasons for being added to {sprint.name}</h5>"
     return f"""
     <strong style="color: rgb(255,102,0)">Issues Added to Sprint</strong><br />
     {print_pbis(added_issue_list)}
@@ -83,19 +88,22 @@ def spillover_incomplete_pbis(sprint: SprintReport) -> str:
 def bugs_details(sprint: SprintReport) -> str:
     all_items = get_all_jira_issues_from_sprint_report(sprint)
     bug_list: list[JiraIssueSprintReport] = []
+    res: str = """<strong style="color: rgb(255,102,0)">Bug Details</strong><br />"""
     for issue in all_items:
         if issue.issue_type == "Bug":
             bug_list.append(issue)
-    return f"""
-    <strong style="color: rgb(255,102,0)">Bug Details</strong><br />
-    {print_pbis(bug_list)}
-    """
+    if len(bug_list) > 0:
+        return f"""{res}{print_pbis(bug_list)}"""
+    return f"No Bugs encountered during {sprint.name}"
 
 
 def upcoming_releases(sprint: SprintReport) -> str:
-    project_key: str = get_all_jira_issues_from_sprint_report(sprint)[0].key.split("-")[
-        0
-    ]
+    all_issues: list[JiraIssueSprintReport] = get_all_jira_issues_from_sprint_report(
+        sprint
+    )
+    project_key: str = "FDA1"
+    if len(all_issues) > 0:
+        project_key: str = all_issues[0].key.split("-")[0]
     return f"""
     <h2>Upcoming Releases</h2>
     please review the <a href="https://jira.amer.thermo.com/projects/{project_key}?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased">release calendar page</a> for current and upcoming releases
@@ -159,13 +167,22 @@ def total_items_table(sprint: SprintReport) -> str:
                     <td style="text-align: center">{get_total_commited_pbis(sprint)}</td>
                     <td style="text-align: center">{sprint.commited_story_points}</td>
                     <td style="text-align: center">{sprint.delivered_story_points}</td>
-                    <td style="text-align: center">{round(((sprint.delivered_story_points / sprint.commited_story_points ) * 100), 2)} %</td>
+                    <td style="text-align: center">{calculate_completion(sprint)} %</td>
                     <td style="text-align: center">N/A</td>
                     <td style="text-align: center">N/A</td>
                 </tr>
             </tbody>
         </table>
     """
+
+
+def calculate_completion(sprint: SprintReport) -> str:
+    delivered = sprint.delivered_story_points or 0
+    committed = sprint.commited_story_points or 0
+
+    if delivered or committed:
+        return f"{delivered / committed * 100:.2f}"
+    return "N/A"
 
 
 def qppi_link(board: str) -> str:
@@ -175,7 +192,7 @@ def qppi_link(board: str) -> str:
 
 
 def print_pbis(table_rows: Optional[list[JiraIssueSprintReport]]) -> str:
-    res: str = "No issues during the Sprint"
+    res: str = "No issues during the Sprint.<br />"
     if table_rows is not None:
         res: str = f"""
         <table>

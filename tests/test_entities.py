@@ -15,6 +15,12 @@ from entities.sprint_report_api import (
     sprint_report_from_dict,
     update_issue_key_with_value,
 )
+from entities.team_info import (
+    ListTeamBoards,
+    ListTeamSprints,
+    team_board_list_from_dict,
+    team_sprint_list_from_dict,
+)
 from jira_sprint_reporter.sprint_report_queries import get_sprint_report_data
 
 
@@ -171,3 +177,25 @@ class TestQuerySprintReport:
         )
         result: int = len(issue_list) if issue_list else 0
         assert result == 4
+
+
+class TestTeamBoard:
+    @pytest.fixture(scope="class")
+    def boards(self) -> Generator[ListTeamBoards, None, None]:
+        with open("json_files/qppi-boards.json", encoding="utf-8") as json_file:
+            data = json.load(json_file)
+            yield team_board_list_from_dict(data)
+
+    def test_team_board_list_returns_team_board_list_object(self, boards) -> None:
+        assert isinstance(boards, ListTeamBoards)
+
+
+class TestTeamSprint:
+    @pytest.fixture(scope="class")
+    def sprint(self) -> Generator[ListTeamSprints, None, None]:
+        with open("json_files/6363-sprints.json", encoding="utf-8") as json_file:
+            data = json.load(json_file)
+            yield team_sprint_list_from_dict(data)
+
+    def test_team_sprint_returns_team_sprint_object(self, sprint) -> None:
+        assert isinstance(sprint, ListTeamSprints)

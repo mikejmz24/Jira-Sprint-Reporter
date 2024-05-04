@@ -36,7 +36,7 @@ class JiraIssueSprintReport:
     issue_status: str
     issue_priority: str
     resolution: str
-    original_estimate: int
+    original_estimate: Optional[int] = None
     final_estimate: Optional[int] = None
 
     def __getitem__(self, key: str) -> Any:
@@ -69,7 +69,7 @@ class JiraIssueSprintReport:
         issue_status: str = utils.get_object_str(obj, "statusId")
         issue_priority: str = utils.get_object_str(obj, "priorityId")
         resolution: str = utils.get_object(obj, "done")
-        original_estimate: int = utils.get_object(
+        original_estimate: Optional[int] = utils.get_optional_int(
             obj, "currentEstimateStatistic.statFieldValue.value"
         )
         final_estimate: Optional[int] = utils.get_optional_int(
@@ -106,7 +106,8 @@ class JiraIssueSprintReport:
         result["issue_status"] = self.issue_status
         result["issue_priority"] = self.issue_priority
         result["resolution"] = self.resolution
-        result["original_estimate"] = int(self.original_estimate)
+        if self.original_estimate is not None:
+            result["original_estimate"] = int(self.original_estimate)
         if self.final_estimate is not None:
             result["final_estimate"] = int(self.final_estimate)
         return result
@@ -146,8 +147,8 @@ class SprintReport:
     status_types: dict
     priority_types: dict
     issue_types: dict
-    commited_story_points: int
-    delivered_story_points: int
+    commited_story_points: Optional[int]
+    delivered_story_points: Optional[int]
     completed_issues: Optional[list[JiraIssueSprintReport]] = None
     not_completed_issues: Optional[list[JiraIssueSprintReport]] = None
     removed_issues: Optional[list[JiraIssueSprintReport]] = None
@@ -181,10 +182,10 @@ class SprintReport:
         status_types: dict = utils.get_object(obj, "contents.entityData.statuses")
         priority_types: dict = utils.get_object(obj, "contents.entityData.priorities")
         issue_types: dict = utils.get_object(obj, "contents.entityData.types")
-        commited_story_points: int = utils.get_object_int(
+        commited_story_points: Optional[int] = utils.get_optional_int(
             obj, "contents.completedIssuesInitialEstimateSum.value"
         )
-        delivered_story_points: int = utils.get_object_int(
+        delivered_story_points: Optional[int] = utils.get_optional_int(
             obj, "contents.completedIssuesEstimateSum.value"
         )
         completed_issues: Optional[list[JiraIssueSprintReport]] = (
@@ -297,7 +298,11 @@ def get_optional_jira_issue_sprint_report_list(
 ) -> Optional[list[JiraIssueSprintReport]]:
     result: Optional[list[JiraIssueSprintReport]] = None
     result = utils.get_optional_object(object_name, path)
-    return get_jira_issue_sprint_report_list(object_name, path) if result else None
+    return (
+        get_jira_issue_sprint_report_list(object_name, path)
+        if result and len(result) > 0
+        else None
+    )
 
 
 def get_jira_issue_sprint_report_list(
@@ -341,7 +346,10 @@ def get_jira_issues_with_estimation_change(
     )
     if issues:
         for issue in issues:
-            if issue.final_estimate != issue.original_estimate:
+            if (
+                issue.final_estimate != issue.original_estimate
+                or issue.final_estimate is None
+            ):
                 result.append(issue)
     return result
 

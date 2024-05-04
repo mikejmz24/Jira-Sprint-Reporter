@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional
 
-from utilities.utils import get_object, get_object_datetime, get_optional_object
+from utilities.utils import get_object, get_optional_datetime, get_optional_object
 
 
 @dataclass
@@ -49,8 +49,8 @@ class ListTeamBoards:
 class TeamSprint:
     sprint_id: int
     name: str
-    start_date: datetime
-    end_date: datetime
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
     origin_board_id: int
     goal: Optional[str]
 
@@ -58,8 +58,12 @@ class TeamSprint:
     def from_dict(obj: Any) -> "TeamSprint":
         sprint_id: int = int(get_object(obj, "id"))
         name: str = get_object(obj, "name")
-        start_date: datetime = get_object_datetime(obj, "startDate")
-        end_date: datetime = get_object_datetime(obj, "endDate")
+        start_date: Optional[datetime] = get_optional_datetime(
+            obj, "startDate", str_len=-10
+        )
+        end_date: Optional[datetime] = get_optional_datetime(
+            obj, "endDate", str_len=-10
+        )
         origin_board_id: int = int(get_object(obj, "originBoardId"))
         goal: Optional[str] = get_optional_object(obj, "goal")
         return TeamSprint(sprint_id, name, start_date, end_date, origin_board_id, goal)
@@ -68,8 +72,8 @@ class TeamSprint:
         result: dict = {}
         result["sprint_id"] = int(self.sprint_id)
         result["name"] = self.name
-        result["start_date"] = self.start_date
-        result["end_date"] = self.end_date
+        result["start_date"] = str(self.start_date)
+        result["end_date"] = str(self.end_date)
         result["origin_board_id"] = self.origin_board_id
         result["goal"] = self.goal
         return result
