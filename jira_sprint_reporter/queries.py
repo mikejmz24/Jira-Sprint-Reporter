@@ -2,7 +2,7 @@ import json
 import os
 import sys
 from getpass import getpass
-from typing import Tuple, Union
+from typing import Tuple
 
 import requests
 from dotenv import dotenv_values, load_dotenv
@@ -175,7 +175,8 @@ def select_team_board(psswrd: str) -> str:
 
 def select_team_sprint(psswrd: str, team_board_id: str) -> str:
     sprint_api: str = (
-        f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_board_id}/sprint?maxResults=9&startAt=0"
+        # f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_board_id}/sprint?maxResults=9&startAt=0"
+        f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_board_id}/sprint?startAt=0"
     )
     sprint_response: requests.Response = make_api_request(psswrd, sprint_api, "GET")
     if sprint_response.status_code == 200:
@@ -219,13 +220,14 @@ def create_sprint_report_with_user_interaction() -> None:
 
 
 def select_item(
-    items: list[Union[TeamBoard, TeamSprint]], item_type: str
+    items: list[TeamBoard] | list[TeamSprint],
+    item_type: str,
 ) -> dict[str, str]:
     print(f"Please select a {item_type}:")
     for index, item in enumerate(items):
         print(f"[{index + 1}] {item.name}")
     user_selection_index: int = int(input(f"Enter the number of the {item_type}: "))
-    selected_item: Union[TeamBoard, TeamSprint] = items[user_selection_index - 1]
+    selected_item: TeamBoard | TeamSprint = items[user_selection_index - 1]
     return {
         "id": (
             str(selected_item.team_board_id)

@@ -122,7 +122,7 @@ def happiness_score() -> str:
     <table>
         <tbody>
             <tr>
-                <th style="text-align: left" class="highlight-green confluenceTh">Hapiness Score</th>
+                <th style="text-align: left" class="highlight-green confluenceTh">happiness Score</th>
                 <th style="text-align: left" class="highlight-green confluenceTh">Votes</th>
                 <th style="text-align: center" class="highlight-green confluenceTh">Average Happiness</th>
             </tr>
