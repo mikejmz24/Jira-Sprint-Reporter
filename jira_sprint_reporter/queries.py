@@ -1,6 +1,8 @@
 import json
 import os
+import sys
 from getpass import getpass
+from typing import Tuple, Union
 
 import requests
 from dotenv import dotenv_values, load_dotenv
@@ -46,7 +48,7 @@ def query_jira_issue_to_dict_or_json(key: str) -> dict:
     jira_issue_data: entities.jira_issue.JiraIssue = (
         query_jira_issue_to_jira_issue_type(key)
     )
-    result: dict = entities.jira_issue.jira_issue_to_dict(jira_issue_data)
+    result: dict = jira_issue_data.to_dict()
     return result
 
 
@@ -143,106 +145,95 @@ def make_api_request(
     return requests.request(request_type, base_url, headers=headers)
 
 
-def create_sprint_report_with_user_interaction() -> None:
-    psswrd: str = (
-        "bWlndWVsLmppbWVuZXoyQHRoZXJtb2Zpc2hlci5jb206IVRoM3JtQEYxc2gzclNjMTNudDFmMWMyMDIyLi4="
-    )
-    # creds: list[str] = ask_user_to_login()
-    # while creds[1] != "200":
-    #     print("There was a problem logging you in. Please try again...")
-    #     creds = ask_user_to_login()
-    # print("Excellent you're now logged in!")
+def select_board_and_sprint(psswrd: str) -> Tuple[str, str]:
+    team_board_id = select_team_board(psswrd)
+    sprint_id = select_team_sprint(psswrd, team_board_id)
+    return team_board_id, sprint_id
+
+
+def select_team_board(psswrd: str) -> str:
     print("Search for a team board that you would like to generate reports")
     team_board: str = input()
     board_api: str = (
         f"https://jira.amer.thermo.com/rest/agile/latest/board?&startAt=0&name={team_board}"
     )
-    # board_response: requests.Response = make_api_request(creds[0], board_api, "GET")
     board_response: requests.Response = make_api_request(psswrd, board_api, "GET")
     if board_response.status_code == 200:
         list_team_board_object: ListTeamBoards = team_board_list_from_dict(
             board_response.json()
         )
-        team_selection: TeamBoard = user_board_select(list_team_board_object)
+        team_selection: dict[str, str] = select_item(
+            list_team_board_object.boards, "team board"
+        )
         print(
-            f"Excellent, we can continue! Your team board number is: {team_selection.team_board_id}"
+            f"Excellent, we can continue! Your team board number is: {team_selection['id']}"
         )
-        sprint_api: str = (
-            f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_selection.team_board_id}/sprint?maxResults=9&startAt=0"
+        return team_selection["id"]
+    print(f"There was an error with the board. HTTP code: {board_response.status_code}")
+    sys.exit()
+
+
+def select_team_sprint(psswrd: str, team_board_id: str) -> str:
+    sprint_api: str = (
+        f"https://jira.amer.thermo.com/rest/agile/latest/board/{team_board_id}/sprint?maxResults=9&startAt=0"
+    )
+    sprint_response: requests.Response = make_api_request(psswrd, sprint_api, "GET")
+    if sprint_response.status_code == 200:
+        list_team_sprints_object: ListTeamSprints = team_sprint_list_from_dict(
+            sprint_response.json()
         )
-        sprint_response: requests.Response = make_api_request(psswrd, sprint_api, "GET")
-        if sprint_response.status_code == 200:
-            list_team_sprints_object: ListTeamSprints = team_sprint_list_from_dict(
-                sprint_response.json()
-            )
-            sprint_selection: TeamSprint = user_sprint_select(list_team_sprints_object)
-            print(
-                f"Excellent, we can continue! your sprint number is: {sprint_selection.sprint_id}"
-            )
-            print(
-                "Now finally enter the Confluence Space and Ancestor IDs where you would like to create the Sprint report"
-            )
-            print("First enter the Confluence Space Key")
-            space: str = input()
-            print("Now let's finish with the Confluence Ancestor ID")
-            ancestor: str = input()
-            confluence_page_response: requests.Response = (
-                create_confluence_page_with_params(
-                    psswrd,
-                    str(team_selection.team_board_id),
-                    str(sprint_selection.sprint_id),
-                    space,
-                    ancestor,
-                )
-            )
-            print(
-                f"Confluence page HTTP response code: {confluence_page_response.status_code}"
-            )
-        else:
-            print(
-                f"There was an error with the sprints. HTTP code: {sprint_response.status_code}"
-            )
-    else:
+        sprint_selection: dict[str, str] = select_item(
+            list_team_sprints_object.sprints, "sprint"
+        )
         print(
-            f"There was an error with the board. HTTP code: {board_response.status_code}"
+            f"Excellent, we can continue! Your sprint number is: {sprint_selection['id']}"
         )
-    # for index, team in enumerate(list_team_board_object.boards):
-    #     if user_team_select == str(index + 1):
-    #         print(f"Thanks for your selection: {team.name}")
+        return sprint_selection["id"]
+    print(
+        f"There was an error with the sprints. HTTP code: {sprint_response.status_code}"
+    )
+    sys.exit()
 
 
-def user_board_select(list_team_board_object: ListTeamBoards) -> TeamBoard:
-    while True:
-        print("Please select a team:")
-        for index, team in enumerate(list_team_board_object.boards):
-            print(f"[{index + 1}] {team.name}")
-        user_team_select: str = input("Enter the number of the team: ")
-        if user_team_select in map(
-            str, range(1, len(list_team_board_object.boards) + 1)
-        ):
-            selected_team: TeamBoard = list_team_board_object.boards[
-                int(user_team_select) - 1
-            ]
-            print(f"Thanks for your selection: {selected_team.name}")
-            return selected_team
-        print("Sorry, invalid input. Please select a valid team number.")
+def create_sprint_report_with_user_interaction() -> None:
+    psswrd: str = (
+        "bWlndWVsLmppbWVuZXoyQHRoZXJtb2Zpc2hlci5jb206IVRoM3JtQEYxc2gzclNjMTNudDFmMWMyMDIyLi4="
+    )
+    team_board_id, sprint_id = select_board_and_sprint(psswrd)
+
+    print(
+        "Now finally enter the Confluence Space and Ancestor IDs where you would like to create the Sprint report"
+    )
+    print("First enter the Confluence Space Key")
+    space: str = input()
+    print("Now let's finish with the Confluence Ancestor ID")
+    ancestor: str = input()
+    confluence_page_response: requests.Response = create_confluence_page_with_params(
+        psswrd,
+        team_board_id,
+        sprint_id,
+        space,
+        ancestor,
+    )
+    print(f"Confluence page HTTP response code: {confluence_page_response.status_code}")
 
 
-def user_sprint_select(list_team_sprints_object: ListTeamSprints) -> TeamSprint:
-    while True:
-        print("Please select a Sprint:")
-        for index, sprint in enumerate(list_team_sprints_object.sprints):
-            print(f"[{index + 1}] {sprint.name}")
-        user_sprint_selection: str = input("Enter the number of the Sprint: ")
-        if user_sprint_selection in map(
-            str, range(1, len(list_team_sprints_object.sprints) + 1)
-        ):
-            selected_sprint: TeamSprint = list_team_sprints_object.sprints[
-                int(user_sprint_selection) - 1
-            ]
-            print(f"Thanks for your selection: {selected_sprint.name}")
-            return selected_sprint
-        print("Sorry, invalid input. Please select a valid team number.")
+def select_item(
+    items: list[Union[TeamBoard, TeamSprint]], item_type: str
+) -> dict[str, str]:
+    print(f"Please select a {item_type}:")
+    for index, item in enumerate(items):
+        print(f"[{index + 1}] {item.name}")
+    user_selection_index: int = int(input(f"Enter the number of the {item_type}: "))
+    selected_item: Union[TeamBoard, TeamSprint] = items[user_selection_index - 1]
+    return {
+        "id": (
+            str(selected_item.team_board_id)
+            if isinstance(selected_item, TeamBoard)
+            else str(selected_item.sprint_id)
+        ),
+        "name": selected_item.name,
+    }
 
 
 def ask_user_to_login() -> list[str]:
