@@ -1,0 +1,554 @@
+{
+  "contents": {
+    "completedIssues": [
+      {
+        "id": 2641905,
+        "key": "INTGPT-1564",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Make Dall-E Prod-Ready",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 8.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2642037,
+        "key": "INTGPT-1569",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Revised Prompt",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2675134,
+        "key": "INTGPT-1825",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Update Subtitle and disclaimer for Dall-E",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "sateesh.dharemereddy@thermofisher.com",
+        "assigneeName": "dharemereddy, sateesh",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?avatarId=21995",
+        "hasCustomUserAvatar": true,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2675136,
+        "key": "INTGPT-1826",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Improve New Chat page For Dall-E",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2675139,
+        "key": "INTGPT-1827",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Role-based Restriction for Dall-E",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2675185,
+        "key": "INTGPT-1829",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Update Response view",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2681918,
+        "key": "INTGPT-1849",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Adding AoD Repos",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2593614",
+        "epic": "INTGPT-1219",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 2.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "5",
+        "fixVersions": [],
+        "projectId": 24766
+      },
+      {
+        "id": 2684197,
+        "key": "INTGPT-1891",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Update the DALL-E Prompt Examples",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "longxiang.xiao@thermofisher.com",
+        "assigneeName": "Xiao, Long",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=longxiang.xiao%40thermofisher.com&avatarId=25495",
+        "hasCustomUserAvatar": true,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2689163,
+        "key": "INTGPT-1916",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Resolve all Prompt Category String.isBlank() log error in the PROD",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "longxiang.xiao@thermofisher.com",
+        "assigneeName": "Xiao, Long",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=longxiang.xiao%40thermofisher.com&avatarId=25495",
+        "hasCustomUserAvatar": true,
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2691207,
+        "key": "INTGPT-1933",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Error Handling for Dall-E",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2634005",
+        "epic": "INTGPT-1524",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 3.0
+          }
+        },
+        "statusId": "5",
+        "fixVersions": [
+          47752
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2694473,
+        "key": "INTGPT-1965",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Add new Prompt Examples for AskGene",
+        "priorityId": "8",
+        "done": true,
+        "assignee": "rochelle.reyes@thermofisher.com",
+        "assigneeName": "Reyes, Rochelle N.",
+        "avatarUrl": "https://jira.amer.thermo.com/secure/useravatar?ownerId=JIRAUSER35540&avatarId=23697",
+        "hasCustomUserAvatar": true,
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 1.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {}
+        },
+        "statusId": "5",
+        "fixVersions": [],
+        "projectId": 24766
+      }
+    ],
+    "issuesNotCompletedInCurrentSprint": [
+      {
+        "id": 2653331,
+        "key": "INTGPT-1639",
+        "hidden": false,
+        "typeId": "4",
+        "summary": "Use Pre-prompting for search terms when Websearch is on",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2681910",
+        "epic": "INTGPT-1848",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "statusId": "3",
+        "fixVersions": [
+          47868
+        ],
+        "projectId": 24766
+      },
+      {
+        "id": 2691205,
+        "key": "INTGPT-1932",
+        "hidden": false,
+        "typeId": "3",
+        "summary": "Standardize Top Menu Fonts and Sizes",
+        "priorityId": "8",
+        "done": true,
+        "hasCustomUserAvatar": false,
+        "epicId": "2644158",
+        "epic": "INTGPT-1599",
+        "currentEstimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "estimateStatisticRequired": false,
+        "estimateStatistic": {
+          "statFieldId": "customfield_10013",
+          "statFieldValue": {
+            "value": 5.0
+          }
+        },
+        "statusId": "3",
+        "fixVersions": [
+          47868
+        ],
+        "projectId": 24766
+      }
+    ],
+    "puntedIssues": [],
+    "issuesCompletedInAnotherSprint": [],
+    "entityData": {
+      "statuses": {
+        "3": {
+          "statusUrl": "/images/icons/statuses/generic.png",
+          "statusName": "In Progress",
+          "status": {
+            "id": "3",
+            "name": "In Progress",
+            "description": "",
+            "iconUrl": "https://jira.amer.thermo.com/images/icons/statuses/generic.png",
+            "statusCategory": {
+              "id": "4",
+              "key": "indeterminate",
+              "colorName": "yellow"
+            }
+          }
+        },
+        "5": {
+          "statusUrl": "https://jira.amer.thermo.com/images/icons/statuses/resolved.png",
+          "statusName": "Resolved",
+          "status": {
+            "id": "5",
+            "name": "Resolved",
+            "description": "A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed.",
+            "iconUrl": "https://jira.amer.thermo.com/images/icons/statuses/resolved.png",
+            "statusCategory": {
+              "id": "3",
+              "key": "done",
+              "colorName": "green"
+            }
+          }
+        }
+      },
+      "priorities": {
+        "8": {
+          "priorityName": "P2 - High",
+          "priorityUrl": "https://jira.amer.thermo.com/images/icons/priorities/major.svg"
+        }
+      },
+      "types": {
+        "3": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=12508&avatarType=issuetype",
+          "typeName": "Task"
+        },
+        "4": {
+          "typeUrl": "https://jira.amer.thermo.com/secure/viewavatar?size=xsmall&avatarId=12500&avatarType=issuetype",
+          "typeName": "Improvement"
+        }
+      },
+      "epics": {
+        "2644158": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-1599",
+            "epicColor": "ghx-label-9",
+            "text": "Q1 UI Enhancements"
+          }
+        },
+        "2681910": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-1848",
+            "epicColor": "ghx-label-10",
+            "text": "Q1 Prompt Enhancements"
+          }
+        },
+        "2634005": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-1524",
+            "epicColor": "ghx-label-3",
+            "text": "Integrate DALL-E 3 on Gene.AI"
+          }
+        },
+        "2593614": {
+          "epicField": {
+            "id": "customfield_11261",
+            "label": "Epic",
+            "editable": false,
+            "renderer": "epiclink",
+            "epicKey": "INTGPT-1219",
+            "epicColor": "ghx-label-11",
+            "text": "Ask Our Docs - Integration with iFrame"
+          }
+        }
+      }
+    },
+    "completedIssuesInitialEstimateSum": {
+      "value": 25.0,
+      "text": "25.0"
+    },
+    "completedIssuesEstimateSum": {
+      "value": 29.0,
+      "text": "29.0"
+    },
+    "issuesNotCompletedInitialEstimateSum": {
+      "value": 10.0,
+      "text": "10.0"
+    },
+    "issuesNotCompletedEstimateSum": {
+      "value": 10.0,
+      "text": "10.0"
+    },
+    "allIssuesEstimateSum": {
+      "value": 52.0,
+      "text": "52.0"
+    },
+    "puntedIssuesInitialEstimateSum": {
+      "text": "null"
+    },
+    "puntedIssuesEstimateSum": {
+      "text": "null"
+    },
+    "issuesCompletedInAnotherSprintInitialEstimateSum": {
+      "text": "null"
+    },
+    "issuesCompletedInAnotherSprintEstimateSum": {
+      "text": "null"
+    },
+    "issueKeysAddedDuringSprint": {
+      "INTGPT-1932": true,
+      "INTGPT-1965": true,
+      "INTGPT-1933": true,
+      "INTGPT-1916": true,
+      "INTGPT-1849": true,
+      "INTGPT-1891": true
+    }
+  },
+  "sprint": {
+    "id": 40267,
+    "sequence": 40097,
+    "name": "Dragonflies 2024 Q1 Sprint 6",
+    "state": "CLOSED",
+    "goal": "Deploy Prompt Sharing to STAGE and close the gap for delivering Dall-E",
+    "autoStartStop": false,
+    "startDate": "11/Mar/24 5:00 AM",
+    "endDate": "22/Mar/24 8:59 PM",
+    "activatedDate": "11/Mar/24 10:42 AM",
+    "completeDate": "25/Mar/24 10:07 AM",
+    "canUpdateSprint": true,
+    "canStartStopSprint": true,
+    "canUpdateDates": true,
+    "remoteLinks": [],
+    "daysRemaining": 0
+  },
+  "lastUserToClose": "<a class=\"user-hover\" rel=\"adrian.favela@thermofisher.com\" id=\"_adrian.favela@thermofisher.com\" href=\"/secure/ViewProfile.jspa?name=adrian.favela%40thermofisher.com\">Favela, Adrian C.</a>",
+  "userWhoStarted": "<a class=\"user-hover\" rel=\"adrian.favela@thermofisher.com\" id=\"_adrian.favela@thermofisher.com\" href=\"/secure/ViewProfile.jspa?name=adrian.favela%40thermofisher.com\">Favela, Adrian C.</a>",
+  "supportsPages": true
+}

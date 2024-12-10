@@ -1,0 +1,308 @@
+{
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 201,
+  "isLast": false,
+  "values": [
+    {
+      "id": 6750,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6750",
+      "name": "Copy of Copy of Copy of QPPI TF AEM2 Avatar",
+      "type": "scrum"
+    },
+    {
+      "id": 6627,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6627",
+      "name": "Copy of Copy of QPPI TF AEM2 Avatar",
+      "type": "scrum"
+    },
+    {
+      "id": 5339,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5339",
+      "name": "Copy of QPPI Avatar Global Content Engineering",
+      "type": "scrum"
+    },
+    {
+      "id": 5844,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5844",
+      "name": "Copy of QPPI Avatar Global Content Engineering",
+      "type": "scrum"
+    },
+    {
+      "id": 6269,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6269",
+      "name": "Copy of QPPI BLR SMARTDOSE board",
+      "type": "scrum"
+    },
+    {
+      "id": 6654,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6654",
+      "name": "Copy of QPPI BLR SMARTDOSE board",
+      "type": "scrum"
+    },
+    {
+      "id": 5586,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5586",
+      "name": "Copy of QPPI Genesis Attune",
+      "type": "scrum"
+    },
+    {
+      "id": 6383,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6383",
+      "name": "Copy of QPPI Genesis Attune",
+      "type": "scrum"
+    },
+    {
+      "id": 5845,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5845",
+      "name": "Copy of QPPI Jaguars Dashboard",
+      "type": "scrum"
+    },
+    {
+      "id": 6162,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6162",
+      "name": "Copy of QPPI Jazz SCRUM Board",
+      "type": "scrum"
+    },
+    {
+      "id": 6450,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6450",
+      "name": "Copy of QPPI Maxam Ampliseq",
+      "type": "scrum"
+    },
+    {
+      "id": 5872,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5872",
+      "name": "Copy of QPPI PolarBears",
+      "type": "scrum"
+    },
+    {
+      "id": 5510,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5510",
+      "name": "Copy of QPPI RedPandas",
+      "type": "scrum"
+    },
+    {
+      "id": 6485,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6485",
+      "name": "Copy of QPPI TF AEM1 CodeSquad",
+      "type": "scrum"
+    },
+    {
+      "id": 6744,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6744",
+      "name": "Copy of QPPI TF Enterprise Catalog",
+      "type": "scrum"
+    },
+    {
+      "id": 5405,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5405",
+      "name": "Copy of QPPI TF-B2B-Punchout",
+      "type": "scrum"
+    },
+    {
+      "id": 5587,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5587",
+      "name": "Copy of QPPI TF-Profile Board",
+      "type": "scrum"
+    },
+    {
+      "id": 5548,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5548",
+      "name": "Copy of QPPI Vipers Scrum Board",
+      "type": "scrum"
+    },
+    {
+      "id": 5783,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5783",
+      "name": "Copy of QPPI-Vikings",
+      "type": "scrum"
+    },
+    {
+      "id": 6501,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6501",
+      "name": "Copy of QPPI TF AEM2 Avatar",
+      "type": "scrum"
+    },
+    {
+      "id": 6297,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6297",
+      "name": "Copy of QPPI TF AEM2 Avatar",
+      "type": "scrum"
+    },
+    {
+      "id": 6626,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6626",
+      "name": "Copy of QPPI TF AEM2 Avatar",
+      "type": "scrum"
+    },
+    {
+      "id": 6628,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6628",
+      "name": "Copy of QPPI TF AEM2 Avatar",
+      "type": "scrum"
+    },
+    {
+      "id": 6629,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6629",
+      "name": "Copy of QPPI TF B2B Ordering Siegen",
+      "type": "scrum"
+    },
+    {
+      "id": 6639,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6639",
+      "name": "Copy of QPPI TF Documents EDAM",
+      "type": "scrum"
+    },
+    {
+      "id": 5350,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5350",
+      "name": "QPPI - QM - ULS-IM",
+      "type": "scrum"
+    },
+    {
+      "id": 2264,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/2264",
+      "name": "QPPI Airavata (TF - Loyalty) Board",
+      "type": "scrum"
+    },
+    {
+      "id": 3253,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/3253",
+      "name": "QPPI Alchemists",
+      "type": "scrum"
+    },
+    {
+      "id": 6496,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6496",
+      "name": "QPPI Alebrijes",
+      "type": "scrum"
+    },
+    {
+      "id": 1248,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1248",
+      "name": "QPPI Alpacas",
+      "type": "scrum"
+    },
+    {
+      "id": 1546,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1546",
+      "name": "QPPI Amarok",
+      "type": "scrum"
+    },
+    {
+      "id": 1693,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1693",
+      "name": "QPPI Armadillos",
+      "type": "scrum"
+    },
+    {
+      "id": 1530,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1530",
+      "name": "QPPI Atlantis (TF-PDP) Board",
+      "type": "scrum"
+    },
+    {
+      "id": 3219,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/3219",
+      "name": "QPPI Avatar Global Content Engineering",
+      "type": "scrum"
+    },
+    {
+      "id": 5519,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5519",
+      "name": "QPPI Balrogs",
+      "type": "scrum"
+    },
+    {
+      "id": 2177,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/2177",
+      "name": "QPPI BeakerSeekers",
+      "type": "scrum"
+    },
+    {
+      "id": 1869,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1869",
+      "name": "QPPI BID Bullets",
+      "type": "scrum"
+    },
+    {
+      "id": 5473,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/5473",
+      "name": "QPPI BLR SMARTDOSE board",
+      "type": "scrum"
+    },
+    {
+      "id": 1304,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1304",
+      "name": "QPPI Camaleones SEP board",
+      "type": "scrum"
+    },
+    {
+      "id": 150,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/150",
+      "name": "QPPI Capybaras",
+      "type": "scrum"
+    },
+    {
+      "id": 4445,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/4445",
+      "name": "QPPI Cart Works",
+      "type": "scrum"
+    },
+    {
+      "id": 1681,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1681",
+      "name": "QPPI Cartel board",
+      "type": "scrum"
+    },
+    {
+      "id": 3743,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/3743",
+      "name": "QPPI Catalog Admin (TF-CATADMIN) Board",
+      "type": "scrum"
+    },
+    {
+      "id": 1676,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1676",
+      "name": "QPPI Catalog Team - Main Board",
+      "type": "scrum"
+    },
+    {
+      "id": 1090,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/1090",
+      "name": "QPPI Centaurs",
+      "type": "scrum"
+    },
+    {
+      "id": 3776,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/3776",
+      "name": "QPPI Chanakya EVOS Instrument",
+      "type": "scrum"
+    },
+    {
+      "id": 6630,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/6630",
+      "name": "QPPI Chanakya EVOS M7000",
+      "type": "scrum"
+    },
+    {
+      "id": 2780,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/2780",
+      "name": "QPPI Check Mates",
+      "type": "scrum"
+    },
+    {
+      "id": 2356,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/2356",
+      "name": "QPPI CodesQuad Global Content Engineering",
+      "type": "scrum"
+    },
+    {
+      "id": 98,
+      "self": "https://jira.amer.thermo.com/rest/agile/1.0/board/98",
+      "name": "QPPI Concord",
+      "type": "scrum"
+    }
+  ]
+}
