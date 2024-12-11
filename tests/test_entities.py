@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Generator, Optional
 
 import pytest
@@ -24,10 +25,18 @@ from entities.team_info import (
 from jira_sprint_reporter.sprint_report_queries import get_sprint_report_data
 
 
+def get_absolute_path(relative_path: str, base_path: Optional[str] = None) -> str:
+    """Returns the absolute path for a given relative path."""
+    if base_path is None:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_path, relative_path)
+
+
 def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
     """jira_issue_from_dict method returns a valid JiraIssue object type
     when a valid JSON is passed as a parameter"""
-    with open("json_files/intgpt-109.json", encoding="utf-8") as json_file:
+    json_file_path: str = get_absolute_path("json_files/intgpt-109.json")
+    with open(json_file_path, encoding="utf-8") as json_file:
         data = json.load(json_file)
         json_data: JiraIssue = jira_issue_from_dict(data)
         print("str() string: ", str(json_data))
@@ -39,7 +48,8 @@ def test_jira_issue_from_dict_returns_jira_issue_object_type() -> None:
 def test_jira_issue_to_dict_returns_json_object_type() -> None:
     """jira_issue_to_dict method return a valid Json object type
     when a valid JiraIssue object is passed as parameter"""
-    with open("json_files/intgpt-109.json", encoding="utf-8") as json_file:
+    json_file_path: str = get_absolute_path("json_files/intgpt-109.json")
+    with open(json_file_path, encoding="utf-8") as json_file:
         data = json.load(json_file)
         print(type(data))
         json_data: JiraIssue = jira_issue_from_dict(data)
@@ -51,7 +61,9 @@ def test_jira_issue_to_dict_returns_json_object_type() -> None:
 def test_sprint_report_from_dict_returns_sprint_report_object_type() -> None:
     """sprint_report_api_to_dict method returns a valid SprintReport object type
     when a valid JSON object is passed as parameter"""
-    with open("json_files/sprint-36928.json", encoding="utf-8") as json_file:
+    json_file_path: str = get_absolute_path("json_files/sprint-36928.json")
+    with open(json_file_path, encoding="utf-8") as json_file:
+        # with open("json_files/sprint-36928.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
         json_data: SprintReport = sprint_report_from_dict(data)
         print("str() string: ", str(json_data))
@@ -63,7 +75,9 @@ def test_sprint_report_from_dict_returns_sprint_report_object_type() -> None:
 class TestSprintReportMethods:
     @pytest.fixture(scope="class")
     def sprint_data(self) -> Generator[SprintReport, None, None]:
-        with open("json_files/sprint-36928.json", encoding="utf-8") as json_file:
+        json_file_path: str = get_absolute_path("json_files/sprint-36928.json")
+        with open(json_file_path, encoding="utf-8") as json_file:
+            # with open("json_files/sprint-36928.json", encoding="utf-8") as json_file:
             data = json.load(json_file)
             yield sprint_report_from_dict(data)
 
@@ -183,7 +197,9 @@ class TestQuerySprintReport:
 class TestTeamBoard:
     @pytest.fixture(scope="class")
     def boards(self) -> Generator[ListTeamBoards, None, None]:
-        with open("json_files/qppi-boards.json", encoding="utf-8") as json_file:
+        json_file_path: str = get_absolute_path("json_files/qppi-boards.json")
+        with open(json_file_path, encoding="utf-8") as json_file:
+            # with open("json_files/qppi-boards.json", encoding="utf-8") as json_file:
             data = json.load(json_file)
             yield team_board_list_from_dict(data)
 
@@ -194,7 +210,9 @@ class TestTeamBoard:
 class TestTeamSprint:
     @pytest.fixture(scope="class")
     def sprint(self) -> Generator[ListTeamSprints, None, None]:
-        with open("json_files/6363-sprints.json", encoding="utf-8") as json_file:
+        json_file_path: str = get_absolute_path("json_files/6363-sprints.json")
+        with open(json_file_path, encoding="utf-8") as json_file:
+            # with open("json_files/6363-sprints.json", encoding="utf-8") as json_file:
             data = json.load(json_file)
             yield team_sprint_list_from_dict(data)
 

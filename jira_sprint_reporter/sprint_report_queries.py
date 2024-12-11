@@ -19,6 +19,7 @@ class QuerySprintReport:
         base_url: str = (
             "https://jira.amer.thermo.com/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId="
         )
+        # headers: dict = {"Authorization": os.environ.get("PASSWORD")}
         headers: dict = {"Authorization": os.environ.get("PASSWORD")}
 
         return requests.request(
