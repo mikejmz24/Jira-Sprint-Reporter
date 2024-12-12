@@ -82,9 +82,9 @@ Here is a quick example fo using the CLI:
 python main.py
 ```
 
-2. Followo the prompts:
+2. Follow the prompts:
 
-```bash
+```
 Search for a team board that you woulld like to generate reports
 Team A
 
