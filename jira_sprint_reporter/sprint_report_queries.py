@@ -13,6 +13,13 @@ from entities.sprint_report_api import (
 config = dotenv_values("../.env")
 load_dotenv()
 
+headers_data: dict = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": os.environ.get("BEARER_TOKEN"),
+    "Cookie": os.environ.get("COOKIE"),
+}
+
 
 class QuerySprintReport:
     def query_sprint_data(self, sprint_board: str, sprint_id: str) -> requests.Response:
@@ -20,8 +27,8 @@ class QuerySprintReport:
             "https://jira.amer.thermo.com/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId="
         )
         # headers: dict = {"Authorization": os.environ.get("PASSWORD")}
-        headers: dict = {"Authorization": os.environ.get("PASSWORD")}
-
+        # headers: dict = {"Authorization": os.environ.get("PASSWORD")}
+        headers: dict = headers_data
         return requests.request(
             "GET", base_url + sprint_board + "&sprintId=" + sprint_id, headers=headers
         )

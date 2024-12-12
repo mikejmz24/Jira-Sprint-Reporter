@@ -1,6 +1,96 @@
 import base64
+import os
 from datetime import datetime
 from typing import Any, Optional
+
+# def get_absolute_path(relative_path: str, base_path: Optional[str] = None) -> str:
+#     """Returns the absolute path for a given relative path."""
+#     if base_path is None:
+#         # base_path = os.path.dirname(os.path.abspath(__file__))
+#         base_path = os.path.dirname(os.path.dirname(__file__))
+#     return os.path.join(base_path, relative_path)
+
+
+# def get_project_root() -> str:
+#     """Returns the root directory of the project."""
+#     current_dir = os.path.dirname(os.path.abspath(__file__))
+#     while not os.path.isfile(os.path.join(current_dir, "main.py")):
+#         current_dir = os.path.dirname(current_dir)
+#         if current_dir == os.path.dirname(current_dir):  # Reached the filesystem root
+#             raise FileNotFoundError("Project root with 'main.py' not found.")
+#     return current_dir
+#
+#
+# def get_relative_path(relative_path: str, base_path: Optional[str] = None) -> str:
+#     """Returns the relative path at the root of the project for a given relative path."""
+#     if base_path is None:
+#         base_path = get_project_root()
+#     absolute_path = os.path.join(base_path, relative_path)
+#     project_root = get_project_root()
+#     return os.path.relpath(absolute_path, start=project_root)
+def get_project_root() -> str:
+    """
+    Returns the absolute path to the project root directory.
+    The root is identified by the presence of a 'main.py' file.
+
+    Returns:
+        str: Absolute path to the project root directory
+
+    Raises:
+        FileNotFoundError: If the project root containing 'main.py' cannot be found
+    """
+    # Get the absolute path of the directory containing this utility file
+    current_file = os.path.abspath(__file__)
+    current_dir = os.path.dirname(current_file)
+
+    # Search upwards until we find main.py or hit the filesystem root
+    while True:
+        if os.path.isfile(os.path.join(current_dir, "main.py")):
+            return current_dir
+
+        parent_dir = os.path.dirname(current_dir)
+        if parent_dir == current_dir:  # Reached filesystem root
+            raise FileNotFoundError(
+                f"Project root with 'main.py' not found when searching upwards from {current_file}"
+            )
+        current_dir = parent_dir
+
+
+def get_absolute_path(relative_path: str, base_path: Optional[str] = None) -> str:
+    """
+    Converts a relative path to an absolute path based on the project root.
+
+    Args:
+        relative_path (str): The relative path to convert
+        base_path (Optional[str]): Base path to use instead of project root
+
+    Returns:
+        str: The absolute path
+    """
+    if base_path is None:
+        base_path = get_project_root()
+    return os.path.abspath(os.path.join(base_path, relative_path))
+
+
+def get_relative_path(path: str, base_path: Optional[str] = None) -> str:
+    """
+    Converts any path to a path relative to the project root.
+
+    Args:
+        path (str): The path to convert (can be absolute or relative)
+        base_path (Optional[str]): Base path to use instead of project root
+
+    Returns:
+        str: The relative path from the project root
+    """
+    if base_path is None:
+        base_path = get_project_root()
+
+    # First convert the input path to absolute
+    abs_path = get_absolute_path(path, os.path.dirname(os.path.abspath(path)))
+
+    # Then get the relative path from the base
+    return os.path.relpath(abs_path, start=base_path)
 
 
 def get_object(object_name: Any, path: str) -> Any:
