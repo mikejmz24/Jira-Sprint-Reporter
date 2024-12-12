@@ -106,6 +106,13 @@ Now let's finish with the Confluence Ancestor ID
 
 3. The tool will then generate a sprint report and print it to the specified Confluence page.
 
+### Closing the virtual environment
+To close the poetry shell type
+
+```bash
+exit
+```
+
 #### Contributing
 Contributions are welcome! Please fork the repository and submit a pull request for any improvement or bug fixes.
 

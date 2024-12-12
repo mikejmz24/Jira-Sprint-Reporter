@@ -11,7 +11,7 @@ def test_get_object_path_str() -> None:
 
 
 def test_get_object_string_with_no_levels_of_nested_search() -> None:
-    json_file_path: str = utils.get_absolute_path("../tests/json_files/intgpt-109.json")
+    json_file_path: str = utils.get_absolute_path("tests/json_files/intgpt-109.json")
     with open(json_file_path, encoding="utf-8") as json_file:
         data = json.load(json_file)
         search_path: str = "key"
@@ -22,7 +22,7 @@ def test_get_object_string_with_no_levels_of_nested_search() -> None:
 def test_get_object_string_with_three_levels_of_nested_search() -> None:
     # json_file_path: str = utils.get_absolute_path("../tests/json_files/intgpt-109.json")
     # with open(json_file_path, encoding="utf-8") as json_file:
-    with open("../tests/json_files/intgpt-109.json", encoding="utf-8") as json_file:
+    with open("tests/json_files/intgpt-109.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
         search_path: str = "fields.priority.name"
         expected_result: str = "P2 - High"
@@ -32,7 +32,7 @@ def test_get_object_string_with_three_levels_of_nested_search() -> None:
 def test_get_object_list_of_string_with_one_item() -> None:
     # json_file_path: str = utils.get_absolute_path("../tests/json_files/intgpt-109.json")
     # with open(json_file_path, encoding="utf-8") as json_file:
-    with open("../tests/json_files/intgpt-109.json", encoding="utf-8") as json_file:
+    with open("tests/json_files/intgpt-109.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
         search_path: str = "fields.components.name"
         expected_result: list[str] = ["Global Launch"]
