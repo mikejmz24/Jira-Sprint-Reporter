@@ -1,5 +1,6 @@
 import json
-import os
+
+# import os
 from typing import Generator, Optional
 
 import pytest
@@ -55,9 +56,11 @@ def test_jira_issue_to_dict_returns_json_object_type() -> None:
 def test_sprint_report_from_dict_returns_sprint_report_object_type() -> None:
     """sprint_report_api_to_dict method returns a valid SprintReport object type
     when a valid JSON object is passed as parameter"""
-    json_file_path: str = get_absolute_path("tests/json_files/intgpt-109.json")
+    # json_file_path: str = get_absolute_path("tests/json_files/intgpt-109.json")
+    json_file_path: str = get_absolute_path("tests/json_files/sprint-36928.json")
     with open(json_file_path, encoding="utf-8") as json_file:
         data = json.load(json_file)
+        print(data)
         json_data: SprintReport = sprint_report_from_dict(data)
         print("str() string: ", str(json_data))
 
