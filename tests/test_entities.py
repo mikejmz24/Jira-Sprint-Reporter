@@ -1,28 +1,22 @@
 import json
-
 # import os
 from typing import Generator, Optional
 
 import pytest
 
-from entities.jira_issue import JiraIssue, jira_issue_from_dict, jira_issue_to_dict
-from entities.sprint_report_api import (
-    JiraIssueSprintReport,
-    SprintReport,
-    clean_issue_types,
-    get_active_developers,
-    get_all_jira_issues_from_sprint_report,
-    get_jira_issues_with_estimation_change,
-    set_issue_type,
-    sprint_report_from_dict,
-    update_issue_key_with_value,
-)
-from entities.team_info import (
-    ListTeamBoards,
-    ListTeamSprints,
-    team_board_list_from_dict,
-    team_sprint_list_from_dict,
-)
+from entities.jira_issue import (JiraIssue, jira_issue_from_dict,
+                                 jira_issue_to_dict)
+from entities.sprint_report_api import (JiraIssueSprintReport, SprintReport,
+                                        clean_issue_types,
+                                        get_active_developers,
+                                        get_all_jira_issues_from_sprint_report,
+                                        get_jira_issues_with_estimation_change,
+                                        set_issue_type,
+                                        sprint_report_from_dict,
+                                        update_issue_key_with_value)
+from entities.team_info import (ListTeamBoards, ListTeamSprints,
+                                team_board_list_from_dict,
+                                team_sprint_list_from_dict)
 from jira_sprint_reporter.sprint_report_queries import get_sprint_report_data
 from utilities.utils import get_absolute_path
 
