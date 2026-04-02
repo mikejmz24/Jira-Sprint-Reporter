@@ -1,5 +1,4 @@
 import json
-# import os
 from typing import Generator, Optional
 
 import pytest
@@ -73,7 +72,7 @@ class TestSprintReportMethods:
     def test_return_statuses_dict(self, sprint_data: SprintReport) -> None:
         statuses: dict = clean_issue_types(sprint_data.status_types, "statusName")
         print(statuses)
-        assert len(statuses) == 3
+        assert len(statuses) == 30
 
     def test_return_priorities_dict(self, sprint_data: SprintReport) -> None:
         priorities: dict = clean_issue_types(sprint_data.priority_types, "priorityName")
@@ -83,7 +82,7 @@ class TestSprintReportMethods:
     def test_return_types_dict(self, sprint_data: SprintReport) -> None:
         issues: dict = clean_issue_types(sprint_data.issue_types, "typeName")
         print(issues)
-        assert len(issues) == 5
+        assert len(issues) == 15
 
     def test_get_all_jira_items_list(self, sprint_data: SprintReport) -> None:
         jira_issues: Optional[list[JiraIssueSprintReport]] = (

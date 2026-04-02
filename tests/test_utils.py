@@ -15,7 +15,7 @@ def test_get_object_string_with_no_levels_of_nested_search() -> None:
     with open(json_file_path, encoding="utf-8") as json_file:
         data = json.load(json_file)
         search_path: str = "key"
-        expected_result: str = "INTGPT-109"
+        expected_result: str = "INTGPT-1091"
         assert utils.get_object_str(data, search_path) == expected_result
 
 
@@ -25,7 +25,8 @@ def test_get_object_string_with_three_levels_of_nested_search() -> None:
     with open("tests/json_files/intgpt-109.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
         search_path: str = "fields.priority.name"
-        expected_result: str = "P2 - High"
+        # expected_result: str = "P2 - High"
+        expected_result: str = "P2 - Highest"
         assert utils.get_object_str(data, search_path) == expected_result
 
 
@@ -35,7 +36,7 @@ def test_get_object_list_of_string_with_one_item() -> None:
     with open("tests/json_files/intgpt-109.json", encoding="utf-8") as json_file:
         data = json.load(json_file)
         search_path: str = "fields.components.name"
-        expected_result: list[str] = ["Global Launch"]
+        expected_result: list[str] = ["Global Launches"]
         assert utils.get_object_list_of_str(data, search_path) == expected_result
 
 
